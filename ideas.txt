@@ -1,0 +1,15 @@
+- image-editor style
+- create, save and load various field set-ups
+    - data compression
+        - list of 4 corners for rectangles
+        - list of 2 points for robot paths
+- draw straight lines paths for robot to take
+    - curved lines / freeform draw in future?
+- export paths as instructions for robots to parse
+    'drive 8'
+    'turn 90'
+    'drive 15'
+    'turn -30'
+    etc
+    - for turn instructions, use smallest angle possible (-30 instead of 330, for example)
+- need to decide what the smallest relevant distance is for the field
