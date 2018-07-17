@@ -3,6 +3,7 @@ package ca.team4152.autoeditor;
 import javax.swing.JFrame;
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Toolkit;
 
 public class EditorWindow extends Canvas{
@@ -10,11 +11,14 @@ public class EditorWindow extends Canvas{
     private int width;
     private int height;
 
+    private Editor editor;
     private JFrame frame;
 
-    public EditorWindow(int width, int height){
-        this.width = width;
-        this.height = height;
+    public EditorWindow(Editor editor){
+        this.editor = editor;
+
+        width = editor.getWindowWidth();
+        height = editor.getWindowHeight();
         setPreferredSize(new Dimension(width, height));
 
         frame = new JFrame("Robot Path Editor - Hoya Robotics Tools");
@@ -27,6 +31,11 @@ public class EditorWindow extends Canvas{
                 .getImage(EditorWindow.class.getResource("/icon.png")));
 
         frame.setVisible(true);
+    }
+
+    @Override
+    public void paint(Graphics g){
+        editor.render();
     }
 
 }

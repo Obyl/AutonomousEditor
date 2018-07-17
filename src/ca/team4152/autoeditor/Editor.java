@@ -1,14 +1,51 @@
 package ca.team4152.autoeditor;
 
-public class Editor {
+import ca.team4152.autoeditor.utils.Renderer;
 
-    private static final int WINDOW_WIDTH = 1000;
-    private static final int WINDOW_HEIGHT = 700;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.image.BufferStrategy;
+
+public class Editor{
+
+    private final int WINDOW_WIDTH = 1000;
+    private final int WINDOW_HEIGHT = 700;
 
     private EditorWindow window;
+    private Renderer renderer;
 
     public Editor(){
-        window = new EditorWindow(WINDOW_WIDTH, WINDOW_HEIGHT);
+        window = new EditorWindow(this);
+        renderer = new Renderer(this);
+    }
+
+    public void render(){
+        if(window == null){
+            return;
+        }
+
+        BufferStrategy bs = window.getBufferStrategy();
+        if(bs == null){
+            window.createBufferStrategy(2);
+            return;
+        }
+
+        Graphics g = bs.getDrawGraphics();
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, getWindowWidth(), getWindowHeight());
+
+        renderer.render(g);
+
+        g.dispose();
+        bs.show();
+    }
+
+    public int getWindowWidth(){
+        return WINDOW_WIDTH;
+    }
+
+    public int getWindowHeight(){
+        return WINDOW_HEIGHT;
     }
 
 }
