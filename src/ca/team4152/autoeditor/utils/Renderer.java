@@ -36,8 +36,8 @@ public class Renderer {
 
             for(int y = 0; y < editor.getWindowHeight(); y++){
                 for(int x = 0; x < editor.getWindowWidth(); x++){
-                    int fieldImageX = (int) (scale * (x + xScroll - xOrigin) + xOrigin);
-                    int fieldImageY = (int) (scale * (y + yScroll - yOrigin) + yOrigin);
+                    int fieldImageX = (int) ((1 / scale) * (x - xScroll - xOrigin) + xOrigin);
+                    int fieldImageY = (int) ((1 / scale) * (y - yScroll - yOrigin) + yOrigin);
 
                     if(fieldImageX >= 0 && fieldImageX < currentField.getWidth() &&
                             fieldImageY >= 0 && fieldImageY < currentField.getHeight()){

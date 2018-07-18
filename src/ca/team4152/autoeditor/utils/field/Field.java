@@ -1,5 +1,7 @@
 package ca.team4152.autoeditor.utils.field;
 
+import ca.team4152.autoeditor.Editor;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,11 +13,13 @@ public class Field {
     private int[] fieldImage;
     private boolean shouldUpdateImage;
 
+    private Editor editor;
     private ArrayList<FieldComponent> components = new ArrayList<>();
 
-    public Field(String name, int width, int height) {
+    public Field(String name, int width, int height, Editor editor) {
         this.width = width;
         this.height = height;
+        this.editor = editor;
 
         this.fieldImage = new int[width * height];
         shouldUpdateImage = true;
@@ -93,7 +97,8 @@ public class Field {
         FieldComponent result = null;
 
         for(FieldComponent component : components){
-            if(component.intersects(x, y)){
+            if(component.intersects((int) ((x - editor.getRenderer().getxScroll()) / editor.getRenderer().getScale()),
+                    (int) ((y - editor.getRenderer().getyScroll()) / editor.getRenderer().getScale()))){
                 result = component;
             }
         }
