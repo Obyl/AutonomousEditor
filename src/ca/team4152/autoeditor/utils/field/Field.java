@@ -79,12 +79,17 @@ public class Field {
                 for(int x = path.getX0(); x < path.getX1(); x++){
                     int y = (int) (x * slope);
 
-                    if(path.isSelected()){
-                        fieldImage[x + y * width] = 0x2F5D91;
-                    }else if(path.isHovered()){
-                        fieldImage[x + y * width] = 0x4D96EA;
-                    }else{
-                        fieldImage[x + y * width] = 0x366AA6;
+                    for(int p = 0; p < 9; p++){
+                        int xi = x + (p % 3);
+                        int yi = y + (p / 3);
+
+                        if(path.isSelected()){
+                            fieldImage[xi + yi * width] = 0x2F5D91;
+                        }else if(path.isHovered()){
+                            fieldImage[xi + yi * width] = 0x4D96EA;
+                        }else{
+                            fieldImage[xi + yi * width] = 0x366AA6;
+                        }
                     }
                 }
             }
