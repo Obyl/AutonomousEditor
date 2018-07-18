@@ -42,6 +42,8 @@ public class Renderer {
                     if(fieldImageX >= 0 && fieldImageX < currentField.getWidth() &&
                             fieldImageY >= 0 && fieldImageY < currentField.getHeight()){
                         pixels[x + y * editor.getWindowWidth()] = currentField.getPixelAt(fieldImageX, fieldImageY);
+                    }else{
+                        pixels[x + y * editor.getWindowWidth()] = 0xCCCCCC;
                     }
                 }
             }
