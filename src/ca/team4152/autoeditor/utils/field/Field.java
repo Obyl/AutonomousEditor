@@ -101,6 +101,18 @@ public class Field {
         return result;
     }
 
+    public int getWidth(){
+        return width;
+    }
+
+    public int getHeight(){
+        return height;
+    }
+
+    public int getPixelAt(int x, int y){
+        return fieldImage[x + y * width];
+    }
+
     public static Field getField(String name){
         if(!fields.containsKey(name)){
             return null;
