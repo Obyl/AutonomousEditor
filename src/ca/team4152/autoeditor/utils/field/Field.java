@@ -11,8 +11,7 @@ public class Field {
     private int[] fieldImage;
     private boolean shouldUpdateImage;
 
-    private ArrayList<CollisionBox> collisionBoxes;
-    private ArrayList<RobotPath> robotPaths;
+    private ArrayList<FieldComponent> components = new ArrayList<>();
 
     public Field(String name, int width, int height) {
         this.width = width;
@@ -25,21 +24,12 @@ public class Field {
         fields.put(name, this);
     }
 
-    public ArrayList<CollisionBox> getCollisionBoxes(){
-        return collisionBoxes;
+    public ArrayList<FieldComponent> getComponents(){
+        return components;
     }
 
-    public void addCollisionBox(CollisionBox box){
-        collisionBoxes.add(box);
-        shouldUpdateImage = true;
-    }
-
-    public ArrayList<RobotPath> getRobotPaths(){
-        return robotPaths;
-    }
-
-    public void addRobotPath(RobotPath path){
-        robotPaths.add(path);
+    public void addComponent(FieldComponent component){
+        components.add(component);
         shouldUpdateImage = true;
     }
 
@@ -56,26 +46,30 @@ public class Field {
             fieldImage[i] = 0xFFFFFF;
         }
 
-        for(CollisionBox box : collisionBoxes){
-            for(int y = box.getY(); y < (box.getY() + box.getHeight()); y++){
-                for(int x = box.getX(); x < (box.getX() + box.getWidth()); x++){
-                    if(x < 0 || x >= width || y < 0 || y >= height){
-                        continue;
+        for(FieldComponent component : components){
+            if(component instanceof CollisionBox){
+                CollisionBox box = (CollisionBox) component;
+
+                for(int y = box.getY0(); y < box.getY1(); y++){
+                    for(int x = box.getX0(); x < box.getX1(); x++){
+                        if(x < 0 || x >= width || y < 0 || y >= height){
+                            continue;
+                        }
+
+                        fieldImage[x + y * width] = 0x000000;
                     }
-
-                    fieldImage[x + y * width] = 0x000000;
                 }
-            }
-        }
+            }else if(component instanceof RobotPath){
+                RobotPath path = (RobotPath) component;
 
-        for(RobotPath path : robotPaths){
-            int rise = path.getY1() - path.getY0();
-            int run = path.getX1() - path.getX0();
-            double slope = rise / run;
+                int rise = path.getY1() - path.getY0();
+                int run = path.getX1() - path.getX0();
+                double slope = rise / run;
 
-            for(int x = 0; x < run; x++){
-                int y = (int) (x * slope);
-                fieldImage[x + y * width] = 0x366AA6;
+                for(int x = 0; x < run; x++){
+                    int y = (int) (x * slope);
+                    fieldImage[x + y * width] = 0x366AA6;
+                }
             }
         }
 
