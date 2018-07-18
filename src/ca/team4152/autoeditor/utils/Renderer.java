@@ -23,6 +23,10 @@ public class Renderer {
     }
 
     public void render(Graphics g){
+        if(editor.getCurrentField() != null){
+            editor.getCurrentField().updateImage();
+        }
+
         g.drawImage(image, 0, 0, null);
     }
 

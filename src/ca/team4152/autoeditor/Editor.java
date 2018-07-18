@@ -1,6 +1,7 @@
 package ca.team4152.autoeditor;
 
 import ca.team4152.autoeditor.utils.Renderer;
+import ca.team4152.autoeditor.utils.field.Field;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -14,6 +15,8 @@ public class Editor{
     private EditorWindow window;
     private Renderer renderer;
 
+    private Field currentField;
+
     public Editor(){
         window = new EditorWindow(this);
         renderer = new Renderer(this);
@@ -21,6 +24,9 @@ public class Editor{
 
     public void render(){
         if(window == null){
+            return;
+        }
+        if(renderer == null){
             return;
         }
 
@@ -46,6 +52,10 @@ public class Editor{
 
     public int getWindowHeight(){
         return WINDOW_HEIGHT;
+    }
+
+    public Field getCurrentField(){
+        return currentField;
     }
 
 }
