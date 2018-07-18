@@ -56,7 +56,13 @@ public class Field {
                             continue;
                         }
 
-                        fieldImage[x + y * width] = 0x000000;
+                        if(box.isSelected()){
+                            fieldImage[x + y * width] = 0x505050;
+                        }else if(box.isHovered()){
+                            fieldImage[x + y * width] = 0x7A7A7A;
+                        }else{
+                            fieldImage[x + y * width] = 0x000000;
+                        }
                     }
                 }
             }else if(component instanceof RobotPath){
@@ -68,12 +74,31 @@ public class Field {
 
                 for(int x = 0; x < run; x++){
                     int y = (int) (x * slope);
-                    fieldImage[x + y * width] = 0x366AA6;
+
+                    if(path.isSelected()){
+                        fieldImage[x + y * width] = 0x2F5D91;
+                    }else if(path.isHovered()){
+                        fieldImage[x + y * width] = 0x4D96EA;
+                    }else{
+                        fieldImage[x + y * width] = 0x366AA6;
+                    }
                 }
             }
         }
 
         shouldUpdateImage = false;
+    }
+
+    public FieldComponent getComponentAt(int x, int y){
+        FieldComponent result = null;
+
+        for(FieldComponent component : components){
+            if(component.intersects(x, y)){
+                result = component;
+            }
+        }
+
+        return result;
     }
 
     public static Field getField(String name){

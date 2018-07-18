@@ -7,6 +7,9 @@ public abstract class FieldComponent {
     private int x1;
     private int y1;
 
+    private boolean hovered;
+    private boolean selected;
+
     public FieldComponent(int x0, int y0, int x1, int y1) {
         this.x0 = x0;
         this.y0 = y0;
@@ -44,6 +47,22 @@ public abstract class FieldComponent {
 
     public void setY1(int y1){
         this.y1 = y1;
+    }
+
+    public boolean isHovered(){
+        return hovered;
+    }
+
+    public void setHovered(boolean hovered){
+        this.hovered = hovered;
+    }
+
+    public boolean isSelected(){
+        return selected;
+    }
+
+    public void setSelected(boolean selected){
+        this.selected = selected;
     }
 
     public abstract boolean intersects(int x, int y);
