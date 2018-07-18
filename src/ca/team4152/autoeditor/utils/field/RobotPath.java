@@ -8,11 +8,11 @@ public class RobotPath extends FieldComponent{
 
     @Override
     public boolean intersects(int x, int y) {
-        int rise = getY1() - getY0();
-        int run = getX1() - getX0();
+        double rise = getY1() - getY0();
+        double run = getX1() - getX0();
         double slope = rise / run;
 
-        for(int xi = 0; xi < run; xi++){
+        for(int xi = getX0(); xi < getX1(); xi++){
             int yi = (int) (xi * slope);
 
             if(xi >= x - 5 && xi < x + 5 && yi >= y - 5 && yi < y + 5){

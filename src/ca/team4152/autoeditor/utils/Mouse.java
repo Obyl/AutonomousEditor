@@ -29,11 +29,17 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
                 currentSelected.setSelected(false);
             }
 
+            if(currentSelected != prospectSelected){
+                editor.getCurrentField().setShouldUpdateImage(true);
+            }
+
             currentSelected = prospectSelected;
 
             if(currentSelected != null){
                 currentSelected.setSelected(true);
             }
+
+            editor.render();
         }
     }
 
@@ -67,11 +73,17 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
                 currentHovered.setHovered(false);
             }
 
+            if(currentHovered != prospectHovered){
+                editor.getCurrentField().setShouldUpdateImage(true);
+            }
+
             currentHovered = prospectHovered;
 
             if(currentHovered != null){
                 currentHovered.setHovered(true);
             }
+
+            editor.render();
         }
     }
 
