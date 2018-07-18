@@ -68,11 +68,11 @@ public class Field {
             }else if(component instanceof RobotPath){
                 RobotPath path = (RobotPath) component;
 
-                int rise = path.getY1() - path.getY0();
-                int run = path.getX1() - path.getX0();
+                double rise = path.getY1() - path.getY0();
+                double run = path.getX1() - path.getX0();
                 double slope = rise / run;
 
-                for(int x = 0; x < run; x++){
+                for(int x = path.getX0(); x < path.getX1(); x++){
                     int y = (int) (x * slope);
 
                     if(path.isSelected()){
