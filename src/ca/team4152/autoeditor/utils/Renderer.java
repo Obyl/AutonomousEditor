@@ -27,8 +27,6 @@ public class Renderer {
 
     private int xScroll = 0;
     private int yScroll = 0;
-    private int xOrigin = 0;
-    private int yOrigin = 0;
     private double scale = 1;
 
     public Renderer(Editor editor){
@@ -49,8 +47,8 @@ public class Renderer {
                 for(int x = 0; x < editor.getWindowWidth(); x++){
                     int properColor = WINDOW_BACKGROUND;
 
-                    int fieldImageX = (int) ((1 / scale) * (x - xScroll - xOrigin) + xOrigin);
-                    int fieldImageY = (int) ((1 / scale) * (y - yScroll - yOrigin) + yOrigin);
+                    int fieldImageX = (int) ((1 / scale) * (x - xScroll));
+                    int fieldImageY = (int) ((1 / scale) * (y - yScroll));
 
                     if(fieldImageX >= 0 && fieldImageX < currentField.getWidth() &&
                             fieldImageY >= 0 && fieldImageY < currentField.getHeight()){
@@ -122,10 +120,10 @@ public class Renderer {
                 y1 = box.getY0();
             }
 
-            x0 = (int) ((scale * x0) + xScroll + xOrigin) - xOrigin;
-            y0 = (int) ((scale * y0) + yScroll + yOrigin) - yOrigin;
-            x1 = (int) ((scale * x1) + xScroll + xOrigin) - xOrigin;
-            y1 = (int) ((scale * y1) + yScroll + yOrigin) - yOrigin;
+            x0 = (int) ((scale * x0) + xScroll);
+            y0 = (int) ((scale * y0) + yScroll);
+            x1 = (int) ((scale * x1) + xScroll);
+            y1 = (int) ((scale * y1) + yScroll);
 
             for(int y = y0; y < y1; y++){
                 for(int x = x0; x < x1; x++){
@@ -147,10 +145,10 @@ public class Renderer {
             currentNode = nextNode;
             nextNode = (PathNode) nodes.get(i + 1);
 
-            int x0 = (int) ((scale * currentNode.getX()) + xScroll - xOrigin) + xOrigin;
-            int y0 = (int) ((scale * currentNode.getY()) + yScroll - yOrigin) + yOrigin;
-            int x1 = (int) ((scale * nextNode.getX()) + xScroll - xOrigin) + xOrigin;
-            int y1 = (int) ((scale * nextNode.getY()) + yScroll - yOrigin) + yOrigin;
+            int x0 = (int) ((scale * currentNode.getX()) + xScroll);
+            int y0 = (int) ((scale * currentNode.getY()) + yScroll);
+            int x1 = (int) ((scale * nextNode.getX()) + xScroll);
+            int y1 = (int) ((scale * nextNode.getY()) + yScroll);
 
             boolean steep = false;
 
@@ -234,22 +232,6 @@ public class Renderer {
 
     public void setYScroll(int yScroll) {
         this.yScroll = yScroll;
-    }
-
-    public int getXOrigin() {
-        return xOrigin;
-    }
-
-    public void setXOrigin(int xOrigin) {
-        this.xOrigin = xOrigin;
-    }
-
-    public int getYOrigin() {
-        return yOrigin;
-    }
-
-    public void setYOrigin(int yOrigin) {
-        this.yOrigin = yOrigin;
     }
 
     public double getScale() {

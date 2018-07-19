@@ -57,21 +57,6 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
     }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
-
-    @Override
     public void mouseDragged(MouseEvent e) {
         boolean shouldRender = false;
 
@@ -160,11 +145,44 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
+        if(editor.getCurrentField() != null && e.getScrollType() == MouseWheelEvent.WHEEL_UNIT_SCROLL){
+            double zoomAmount = e.getWheelRotation() * (editor.getRenderer().getScale() * 0.1);
+            double newScale = editor.getRenderer().getScale() - zoomAmount;
 
+            if(newScale > 0.5 && newScale < 10){
+                double oldWidth = (editor.getCurrentField().getWidth() * editor.getRenderer().getScale());
+                double newWidth = (editor.getCurrentField().getWidth() * newScale);
+                double oldHeight = (editor.getCurrentField().getHeight() * editor.getRenderer().getScale());
+                double newHeight = (editor.getCurrentField().getHeight() * newScale);
+
+                double widthDiff = newWidth / oldWidth;
+                double heightDiff = newHeight / oldHeight;
+
+                int newXScroll = (int) ((widthDiff * (e.getX() - editor.getRenderer().getXScroll()) - e.getX()) * -1);
+                int newYScroll = (int) ((heightDiff * (e.getY() - editor.getRenderer().getYScroll()) - e.getY()) * -1);
+
+                editor.getRenderer().setXScroll(newXScroll);
+                editor.getRenderer().setYScroll(newYScroll);
+                editor.getRenderer().setScale(newScale);
+
+                editor.render();
+            }
+        }
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
+    }
 
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
     }
 }
