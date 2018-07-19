@@ -147,10 +147,10 @@ public class Renderer {
             currentNode = nextNode;
             nextNode = (PathNode) nodes.get(i + 1);
 
-            int x0 = (int) ((scale * currentNode.getX0()) + xScroll - xOrigin) + xOrigin;
-            int y0 = (int) ((scale * currentNode.getY0()) + yScroll - yOrigin) + yOrigin;
-            int x1 = (int) ((scale * nextNode.getX0()) + xScroll - xOrigin) + xOrigin;
-            int y1 = (int) ((scale * nextNode.getY0()) + yScroll - yOrigin) + yOrigin;
+            int x0 = (int) ((scale * currentNode.getX()) + xScroll - xOrigin) + xOrigin;
+            int y0 = (int) ((scale * currentNode.getY()) + yScroll - yOrigin) + yOrigin;
+            int x1 = (int) ((scale * nextNode.getX()) + xScroll - xOrigin) + xOrigin;
+            int y1 = (int) ((scale * nextNode.getY()) + yScroll - yOrigin) + yOrigin;
 
             if(Math.abs(y1 - y0) < Math.abs(x1 - x0)){
                 if(x0 > x1){
