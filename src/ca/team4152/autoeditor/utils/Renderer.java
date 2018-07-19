@@ -188,20 +188,24 @@ public class Renderer {
                     int xp = x + (p % 3);
                     int yp = y + (p / 3);
 
-                    if(xp >= 0 && xp < editor.getWindowWidth() && yp >= 0 && yp < editor.getWindowHeight()){
+                    if(xp >= 0 && yp >= 0){
                         if(steep){
-                            int arrayIndex = yp + xp * editor.getWindowWidth();
-                            int currentColor = pixels[arrayIndex];
+                            if(xp < editor.getWindowHeight() && yp < editor.getWindowWidth()){
+                                int arrayIndex = yp + xp * editor.getWindowWidth();
+                                int currentColor = pixels[arrayIndex];
 
-                            if(currentColor == FIELD_BACKGROUND || currentColor == COLLISION_BOX_FILL){
-                                pixels[arrayIndex] = PATH_NODE_FILL;
+                                if(currentColor == FIELD_BACKGROUND || currentColor == COLLISION_BOX_FILL){
+                                    pixels[arrayIndex] = PATH_NODE_FILL;
+                                }
                             }
                         }else{
-                            int arrayIndex = xp + yp * editor.getWindowWidth();
-                            int currentColor = pixels[arrayIndex];
+                            if(xp < editor.getWindowWidth() && yp < editor.getWindowHeight()){
+                                int arrayIndex = xp + yp * editor.getWindowWidth();
+                                int currentColor = pixels[arrayIndex];
 
-                            if(currentColor == FIELD_BACKGROUND || currentColor == COLLISION_BOX_FILL){
-                                pixels[arrayIndex] = PATH_NODE_FILL;
+                                if(currentColor == FIELD_BACKGROUND || currentColor == COLLISION_BOX_FILL){
+                                    pixels[arrayIndex] = PATH_NODE_FILL;
+                                }
                             }
                         }
                     }
