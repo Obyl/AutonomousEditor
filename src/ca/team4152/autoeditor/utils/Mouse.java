@@ -22,6 +22,8 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 
     @Override
     public void mousePressed(MouseEvent e) {
+        boolean shouldRender = false;
+
         if(editor.getCurrentField() != null){
             int x = (int) ((e.getX() - editor.getRenderer().getXScroll()) / editor.getRenderer().getScale());
             int y = (int) ((e.getY() - editor.getRenderer().getYScroll()) / editor.getRenderer().getScale());
@@ -34,16 +36,22 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
                 prospectSelected = editor.getCurrentField().getNodeAt(x, y);
             }
 
-            if(currentSelected != null){
-                currentSelected.setSelected(false);
+            if(currentSelected != prospectSelected){
+                if(currentSelected != null){
+                    currentSelected.setSelected(false);
+                }
+
+                currentSelected = prospectSelected;
+
+                if(currentSelected != null){
+                    currentSelected.setSelected(true);
+                }
+
+                shouldRender = true;
             }
+        }
 
-            currentSelected = prospectSelected;
-
-            if(currentSelected != null){
-                currentSelected.setSelected(true);
-            }
-
+        if(shouldRender){
             editor.render();
         }
     }
@@ -65,6 +73,8 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 
     @Override
     public void mouseDragged(MouseEvent e) {
+        boolean shouldRender = false;
+
         if(editor.getCurrentField() != null){
             if(currentSelected != null){
                 int x = (int) ((e.getX() - editor.getRenderer().getXScroll()) / editor.getRenderer().getScale());
@@ -91,20 +101,28 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
                     node.setX(x);
                     node.setY(y);
                 }
+
+                shouldRender = true;
             }else{
                 editor.getRenderer().setXScroll(editor.getRenderer().getXScroll() + (e.getX() - lastMouseX));
                 editor.getRenderer().setYScroll(editor.getRenderer().getYScroll() + (e.getY() - lastMouseY));
-            }
 
-            editor.render();
+                shouldRender = true;
+            }
         }
 
         lastMouseX = e.getX();
         lastMouseY = e.getY();
+
+        if(shouldRender){
+            editor.render();
+        }
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
+        boolean shouldRender = false;
+
         if(editor.getCurrentField() != null){
             int x = (int) ((e.getX() - editor.getRenderer().getXScroll()) / editor.getRenderer().getScale());
             int y = (int) ((e.getY() - editor.getRenderer().getYScroll()) / editor.getRenderer().getScale());
@@ -117,21 +135,27 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
                 prospectHovered = editor.getCurrentField().getNodeAt(x, y);
             }
 
-            if(currentHovered != null){
-                currentHovered.setHovered(false);
+            if(currentHovered != prospectHovered){
+                if(currentHovered != null){
+                    currentHovered.setHovered(false);
+                }
+
+                currentHovered = prospectHovered;
+
+                if(currentHovered != null){
+                    currentHovered.setHovered(true);
+                }
+
+                shouldRender = true;
             }
-
-            currentHovered = prospectHovered;
-
-            if(currentHovered != null){
-                currentHovered.setHovered(true);
-            }
-
-            editor.render();
         }
 
         lastMouseX = e.getX();
         lastMouseY = e.getY();
+
+        if(shouldRender){
+            editor.render();
+        }
     }
 
     @Override
