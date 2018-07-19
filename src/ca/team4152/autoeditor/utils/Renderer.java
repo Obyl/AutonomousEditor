@@ -1,13 +1,21 @@
 package ca.team4152.autoeditor.utils;
 
 import ca.team4152.autoeditor.Editor;
-import ca.team4152.autoeditor.utils.field.Field;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
 public class Renderer {
+
+    private final int WINDOW_BACKGROUND = 0xEEEEEE;
+    private final int FIELD_BACKGROUND = 0xffffff;
+    private final int COLLISION_BOX_NORMAL = 0x000000;
+    private final int COLLISION_BOX_HOVER = 0x7A7A7A;
+    private final int COLLISION_BOX_SELECT = 0x505050;
+    private final int PATH_NODE_NORMAL = 0x366AA6;
+    private final int PATH_NODE_HOVER = 0x4D96EA;
+    private final int PATH_NODE_SELECT = 0x2F5D91;
 
     private Editor editor;
 
@@ -30,21 +38,49 @@ public class Renderer {
     }
 
     public void render(Graphics g){
-        if(editor.getCurrentField() != null){
-            Field currentField = editor.getCurrentField();
-            currentField.updateImage();
+        Field currentField = editor.getCurrentField();
+        RobotPath currentPath = editor.getCurrentPath();
 
+        if(currentField != null){
             for(int y = 0; y < editor.getWindowHeight(); y++){
                 for(int x = 0; x < editor.getWindowWidth(); x++){
+                    int properColor = WINDOW_BACKGROUND;
+
                     int fieldImageX = (int) ((1 / scale) * (x - xScroll - xOrigin) + xOrigin);
                     int fieldImageY = (int) ((1 / scale) * (y - yScroll - yOrigin) + yOrigin);
 
                     if(fieldImageX >= 0 && fieldImageX < currentField.getWidth() &&
                             fieldImageY >= 0 && fieldImageY < currentField.getHeight()){
-                        pixels[x + y * editor.getWindowWidth()] = currentField.getPixelAt(fieldImageX, fieldImageY);
-                    }else{
-                        pixels[x + y * editor.getWindowWidth()] = 0xCCCCCC;
+                        properColor = FIELD_BACKGROUND;
+
+                        CollisionBox currentFieldBox = (CollisionBox) currentField.getNodeAt(fieldImageX, fieldImageY);
+
+                        PathNode currentPathNode = null;
+                        if(currentPath != null){
+                            currentPathNode = (PathNode) currentPath.getNodeAt(fieldImageX, fieldImageY);
+                        }
+
+                        if(currentFieldBox != null){
+                            if(currentFieldBox.isSelected()){
+                                properColor = COLLISION_BOX_SELECT;
+                            }else if(currentFieldBox.isHovered()){
+                                properColor = COLLISION_BOX_HOVER;
+                            }else{
+                                properColor = COLLISION_BOX_NORMAL;
+                            }
+                        }
+                        if(currentPathNode != null){
+                            if(currentPathNode.isSelected()){
+                                properColor = PATH_NODE_SELECT;
+                            }else if(currentPathNode.isHovered()){
+                                properColor = PATH_NODE_HOVER;
+                            }else{
+                                properColor = PATH_NODE_NORMAL;
+                            }
+                        }
                     }
+
+                    pixels[x + y * editor.getWindowWidth()] = properColor;
                 }
             }
         }
@@ -52,35 +88,35 @@ public class Renderer {
         g.drawImage(image, 0, 0, null);
     }
 
-    public int getxScroll() {
+    public int getXScroll() {
         return xScroll;
     }
 
-    public void setxScroll(int xScroll) {
+    public void setXScroll(int xScroll) {
         this.xScroll = xScroll;
     }
 
-    public int getyScroll() {
+    public int getYScroll() {
         return yScroll;
     }
 
-    public void setyScroll(int yScroll) {
+    public void setYScroll(int yScroll) {
         this.yScroll = yScroll;
     }
 
-    public int getxOrigin() {
+    public int getXOrigin() {
         return xOrigin;
     }
 
-    public void setxOrigin(int xOrigin) {
+    public void setXOrigin(int xOrigin) {
         this.xOrigin = xOrigin;
     }
 
-    public int getyOrigin() {
+    public int getYOrigin() {
         return yOrigin;
     }
 
-    public void setyOrigin(int yOrigin) {
+    public void setYOrigin(int yOrigin) {
         this.yOrigin = yOrigin;
     }
 
@@ -90,6 +126,16 @@ public class Renderer {
 
     public void setScale(double scale) {
         this.scale = scale;
+    }
+
+    public void center(){
+        if(editor.getCurrentField() != null){
+            xScroll = (int) ((editor.getWindowWidth() / 2) -
+                    ((editor.getCurrentField().getWidth() * scale) / 2));
+
+            yScroll = (int) ((editor.getWindowHeight() / 2) -
+                    ((editor.getCurrentField().getHeight() * scale) / 2));
+        }
     }
 
 }

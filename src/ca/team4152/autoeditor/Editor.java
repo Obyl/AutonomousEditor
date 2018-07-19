@@ -1,7 +1,10 @@
 package ca.team4152.autoeditor;
 
+import ca.team4152.autoeditor.utils.CollisionBox;
+import ca.team4152.autoeditor.utils.PathNode;
 import ca.team4152.autoeditor.utils.Renderer;
-import ca.team4152.autoeditor.utils.field.Field;
+import ca.team4152.autoeditor.utils.RobotPath;
+import ca.team4152.autoeditor.utils.Field;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -16,10 +19,20 @@ public class Editor{
     private Renderer renderer;
 
     private Field currentField;
+    private RobotPath currentPath;
 
     public Editor(){
         window = new EditorWindow(this);
         renderer = new Renderer(this);
+
+        renderer.setScale(2);
+
+        setCurrentField(new Field("unnamed_field", 200, 200));
+        currentField.addNode(new CollisionBox(10, 10, 100, 100));
+
+        setCurrentPath(new RobotPath("unnamed_path"));
+        currentPath.addNode(new PathNode(30, 180));
+        currentPath.addNode(new PathNode(170, 130));
     }
 
     public void render(){
@@ -56,6 +69,25 @@ public class Editor{
 
     public Field getCurrentField(){
         return currentField;
+    }
+
+    public void setCurrentField(Field field){
+        this.currentField = field;
+        if(field != null){
+            renderer.center();
+        }
+    }
+
+    public RobotPath getCurrentPath(){
+        return currentPath;
+    }
+
+    public void setCurrentPath(RobotPath path){
+        this.currentPath = path;
+    }
+
+    public Renderer getRenderer(){
+        return renderer;
     }
 
 }

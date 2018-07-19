@@ -1,6 +1,6 @@
-package ca.team4152.autoeditor.utils.field;
+package ca.team4152.autoeditor.utils;
 
-public abstract class FieldComponent {
+public abstract class EditorNode {
 
     private int x0;
     private int y0;
@@ -10,7 +10,7 @@ public abstract class FieldComponent {
     private boolean hovered;
     private boolean selected;
 
-    public FieldComponent(int x0, int y0, int x1, int y1) {
+    public EditorNode(int x0, int y0, int x1, int y1) {
         this.x0 = x0;
         this.y0 = y0;
         this.x1 = x1;
