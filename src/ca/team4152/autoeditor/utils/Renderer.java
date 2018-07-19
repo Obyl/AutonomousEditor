@@ -185,7 +185,8 @@ public class Renderer {
 
                 if(xp >= 0 && xp < editor.getWindowWidth() &&
                         yp >= 0 && yp < editor.getWindowHeight() &&
-                    pixels[xp + yp * editor.getWindowWidth()] == FIELD_BACKGROUND){
+                        (pixels[xp + yp * editor.getWindowWidth()] == FIELD_BACKGROUND ||
+                        pixels[xp + yp * editor.getWindowWidth()] == COLLISION_BOX_FILL)){
                     pixels[xp + yp * editor.getWindowWidth()] = PATH_NODE_FILL;
                 }
             }
@@ -214,7 +215,8 @@ public class Renderer {
 
                 if(xp >= 0 && xp < editor.getWindowWidth() &&
                         yp >= 0 && yp < editor.getWindowHeight() &&
-                        pixels[xp + yp * editor.getWindowWidth()] == FIELD_BACKGROUND){
+                        (pixels[xp + yp * editor.getWindowWidth()] == FIELD_BACKGROUND ||
+                        pixels[xp + yp * editor.getWindowWidth()] == COLLISION_BOX_FILL)){
                     pixels[xp + yp * editor.getWindowWidth()] = PATH_NODE_FILL;
                 }
             }

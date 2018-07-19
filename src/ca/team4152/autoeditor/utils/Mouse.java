@@ -63,7 +63,34 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 
     @Override
     public void mouseDragged(MouseEvent e) {
+        if(editor.getCurrentField() != null && currentSelected != null){
+            int x = (int) ((e.getX() - editor.getRenderer().getXScroll()) / editor.getRenderer().getScale());
+            int y = (int) ((e.getY() - editor.getRenderer().getYScroll()) / editor.getRenderer().getScale());
 
+            if(x < 0 || x >= editor.getCurrentField().getWidth() || y < 0 || y >= editor.getCurrentField().getHeight()){
+                return;
+            }
+
+            if(currentSelected instanceof CollisionBox){
+                CollisionBox box = (CollisionBox) currentSelected;
+                if(Math.abs(box.getX0() - x) < Math.abs(box.getX1() - x)){
+                    box.setX0(x);
+                }else{
+                    box.setX1(x);
+                }
+                if(Math.abs(box.getY0() - y) < Math.abs(box.getY1() - y)){
+                    box.setY0(y);
+                }else{
+                    box.setY1(y);
+                }
+            }else if(currentSelected instanceof PathNode){
+                PathNode node = (PathNode) currentSelected;
+                node.setX(x);
+                node.setY(y);
+            }
+
+            editor.render();
+        }
     }
 
     @Override
