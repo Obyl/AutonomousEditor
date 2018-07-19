@@ -31,8 +31,9 @@ public class Editor{
         currentField.addNode(new CollisionBox(10, 10, 100, 100));
 
         setCurrentPath(new RobotPath("unnamed_path"));
-        currentPath.addNode(new PathNode(30, 180));
-        currentPath.addNode(new PathNode(170, 130));
+        currentPath.addNode(new PathNode(30, 130));
+        currentPath.addNode(new PathNode(130, 180));
+        currentPath.addNode(new PathNode(170, 100));
     }
 
     public void render(){
