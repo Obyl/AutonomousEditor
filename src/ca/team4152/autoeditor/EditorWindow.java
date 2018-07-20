@@ -1,6 +1,6 @@
 package ca.team4152.autoeditor;
 
-import ca.team4152.autoeditor.utils.Mouse;
+import ca.team4152.autoeditor.utils.Listener;
 
 import javax.swing.JFrame;
 import java.awt.Canvas;
@@ -22,10 +22,11 @@ public class EditorWindow extends Canvas{
         height = editor.getWindowHeight();
         setPreferredSize(new Dimension(width, height));
 
-        Mouse mouse = new Mouse(editor);
-        addMouseListener(mouse);
-        addMouseMotionListener(mouse);
-        addMouseWheelListener(mouse);
+        Listener listener = new Listener(editor);
+        addKeyListener(listener);
+        addMouseListener(listener);
+        addMouseMotionListener(listener);
+        addMouseWheelListener(listener);
 
         frame = new JFrame("Robot Path Editor - Hoya Robotics Tools");
         frame.setResizable(false);

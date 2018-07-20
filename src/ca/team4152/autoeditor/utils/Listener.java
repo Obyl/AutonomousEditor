@@ -2,21 +2,24 @@ package ca.team4152.autoeditor.utils;
 
 import ca.team4152.autoeditor.Editor;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
-public class Mouse implements MouseListener, MouseMotionListener, MouseWheelListener{
+public class Listener implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener{
 
     private Editor editor;
     private EditorNode currentHovered;
     private EditorNode currentSelected;
     private int lastMouseX;
     private int lastMouseY;
+    private boolean ctrlDown;
 
-    public Mouse(Editor editor){
+    public Listener(Editor editor){
         this.editor = editor;
     }
 
@@ -71,16 +74,40 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 
                 if(currentSelected instanceof CollisionBox){
                     CollisionBox box = (CollisionBox) currentSelected;
-                    if(Math.abs(box.getX0() - x) < Math.abs(box.getX1() - x)){
-                        box.setX0(x);
+
+                    int x0 = box.getX0();
+                    int y0 = box.getY0();
+                    int x1 = box.getX1();
+                    int y1 = box.getY1();
+
+                    if(Math.abs(x0 - x) < Math.abs(x1 - x)){
+                        x0 = x;
+                        if(ctrlDown){
+                            x1 = x + (box.getX1() - box.getX0());
+                        }
                     }else{
-                        box.setX1(x);
+                        x1 = x;
+                        if(ctrlDown){
+                            x0 = x - (box.getX1() - box.getX0());
+                        }
                     }
-                    if(Math.abs(box.getY0() - y) < Math.abs(box.getY1() - y)){
-                        box.setY0(y);
+
+                    if(Math.abs(y0 - y) < Math.abs(y1 - y)){
+                        y0 = y;
+                        if(ctrlDown){
+                            y1 = y + (box.getY1() - box.getY0());
+                        }
                     }else{
-                        box.setY1(y);
+                        y1 = y;
+                        if(ctrlDown){
+                            y0 = y - (box.getY1() - box.getY0());
+                        }
                     }
+
+                    box.setX0(x0);
+                    box.setY0(y0);
+                    box.setX1(x1);
+                    box.setY1(y1);
                 }else if(currentSelected instanceof PathNode){
                     PathNode node = (PathNode) currentSelected;
                     node.setX(x);
@@ -171,6 +198,20 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
     }
 
     @Override
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_CONTROL){
+            ctrlDown = true;
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_CONTROL){
+            ctrlDown = false;
+        }
+    }
+
+    @Override
     public void mouseClicked(MouseEvent e) {
     }
 
@@ -184,5 +225,10 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 
     @Override
     public void mouseExited(MouseEvent e) {
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
     }
 }
