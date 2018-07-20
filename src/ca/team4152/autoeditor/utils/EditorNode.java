@@ -81,6 +81,27 @@ public abstract class EditorNode {
     public abstract boolean intersects(int x, int y);
 
     public static EditorNode getNode(int id){
-        return allNodes.get(id);
+        EditorNode result = null;
+
+        for(EditorNode node : allNodes){
+            if(node.getId() == id){
+                result = node;
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    public static void removeNode(int id){
+        int index = 0;
+
+        for(EditorNode node : allNodes){
+            if(node.getId() == id){
+                allNodes.remove(index);
+                return;
+            }
+            index++;
+        }
     }
 }

@@ -47,6 +47,7 @@ public abstract class EditorComponent {
     }
 
     public void removeNode(EditorNode node){
+        EditorNode.removeNode(node.getId());
         nodes.remove(node);
     }
 
