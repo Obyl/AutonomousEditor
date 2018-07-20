@@ -21,6 +21,7 @@ public class Renderer {
 
     private BufferedImage image;
     private int[] pixels;
+    private boolean renderedSuccessfully;
 
     private int xScroll = 0;
     private int yScroll = 0;
@@ -84,6 +85,7 @@ public class Renderer {
         }
 
         g.drawImage(image, 0, 0, null);
+        renderedSuccessfully = true;
     }
 
     private void drawCollisionBoxes(){
@@ -235,6 +237,10 @@ public class Renderer {
 
     public void setScale(double scale) {
         this.scale = scale;
+    }
+
+    public boolean hasRenderedSuccessfully(){
+        return renderedSuccessfully;
     }
 
     public void center(){

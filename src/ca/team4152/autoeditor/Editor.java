@@ -34,6 +34,21 @@ public class Editor{
         currentPath.addNode(new PathNode(30, 130));
         currentPath.addNode(new PathNode(130, 180));
         currentPath.addNode(new PathNode(170, 100));
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(!renderer.hasRenderedSuccessfully()){
+                    render();
+
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }, "First Render").start();
     }
 
     public void render(){
