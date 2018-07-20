@@ -209,18 +209,7 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
             ctrlDown = true;
         }else if(e.getKeyCode() == KeyEvent.VK_Z){
             if(ctrlDown){
-                HistoryItem newestItem = History.getNewestItem();
-
-                if(newestItem == null){
-                    return;
-                }
-
-                EditorNode changedNode = EditorNode.getNode(newestItem.getChangedId());
-                changedNode.setX0(newestItem.getPreviousX0());
-                changedNode.setY0(newestItem.getPreviousY0());
-                changedNode.setX1(newestItem.getPreviousX1());
-                changedNode.setY1(newestItem.getPreviousY1());
-
+                History.undoLast();
                 editor.render();
             }
         }

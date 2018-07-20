@@ -23,13 +23,18 @@ public class History {
         changeHistory.add(0, newItem);
     }
 
-    public static HistoryItem getNewestItem(){
+    public static void undoLast(){
         if(changeHistory.size() < 1){
-            return null;
+            return;
         }
 
         HistoryItem newestItem = changeHistory.get(0);
         changeHistory.remove(0);
-        return newestItem;
+
+        EditorNode changedNode = EditorNode.getNode(newestItem.getChangedId());
+        changedNode.setX0(newestItem.getPreviousX0());
+        changedNode.setY0(newestItem.getPreviousY0());
+        changedNode.setX1(newestItem.getPreviousX1());
+        changedNode.setY1(newestItem.getPreviousY1());
     }
 }
