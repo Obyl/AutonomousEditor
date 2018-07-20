@@ -43,6 +43,7 @@ public class Renderer {
         if(currentField != null){
             for(int y = 0; y < editor.getWindowHeight(); y++){
                 for(int x = 0; x < editor.getWindowWidth(); x++){
+                    //Set default colour to draw here, then change it accordingly in the method.
                     int properColor = WINDOW_BACKGROUND;
 
                     int fieldImageX = (int) ((1 / scale) * (x - xScroll));
@@ -77,10 +78,12 @@ public class Renderer {
                 }
             }
 
+            //Draws the interior of the currently selected collision box.
             drawCollisionBoxes();
         }
 
         if(currentPath != null){
+            //Draws the lines connecting the path nodes.
             drawPathNodes();
         }
 

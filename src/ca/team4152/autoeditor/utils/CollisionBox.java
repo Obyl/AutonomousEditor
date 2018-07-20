@@ -8,6 +8,7 @@ public class CollisionBox extends EditorNode{
 
     @Override
     public boolean intersects(int x, int y) {
+        //If it's selected, extend the corners a little bit to make it clear where you need to click.
         if(isSelected()){
             if(x >= getX0() - 3 && x < getX0() + 3 && y >= getY0() - 3 && y < getY0() + 3){
                 return true;

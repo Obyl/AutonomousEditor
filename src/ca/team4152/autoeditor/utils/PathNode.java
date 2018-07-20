@@ -26,6 +26,7 @@ public class PathNode extends EditorNode{
 
     @Override
     public boolean intersects(int x, int y) {
+        //Represent node as a single pixel in code, but draw & interact with it larger.
         return x >= getX0() - 3 && x < getX1() + 3 && y >= getY0() - 3 && y < getY1() + 3;
     }
 }

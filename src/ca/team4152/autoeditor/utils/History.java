@@ -14,6 +14,9 @@ public class History {
 
         if(changeHistory.size() > 0){
             HistoryItem item = changeHistory.get(0);
+            //Don't add the item if it's the same as the most recent one.
+            //This happens, for example, when you select a CollisionBox but don't move it,
+            //and then move it with your next action.
             if(item.getChangedId() == newItem.getChangedId() &&
                     item.getPreviousX0() == newItem.getPreviousX0() &&
                     item.getPreviousY0() == newItem.getPreviousY0() &&

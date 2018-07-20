@@ -28,9 +28,11 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
         boolean shouldRender = false;
 
         if(editor.getCurrentField() != null){
+            //Translate mouse coordinates to coordinates relative to field.
             int x = (int) ((e.getX() - editor.getRenderer().getXScroll()) / editor.getRenderer().getScale());
             int y = (int) ((e.getY() - editor.getRenderer().getYScroll()) / editor.getRenderer().getScale());
 
+            //When finding selected node, prioritize path nodes.
             EditorNode prospectSelected = null;
             if(editor.getCurrentPath() != null){
                 prospectSelected = editor.getCurrentPath().getNodeAt(x, y);
@@ -71,9 +73,11 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 
         if(editor.getCurrentField() != null){
             if(currentSelected != null){
+                //Translate mouse coordinates to coordinates relative to field.
                 int x = (int) ((e.getX() - editor.getRenderer().getXScroll()) / editor.getRenderer().getScale());
                 int y = (int) ((e.getY() - editor.getRenderer().getYScroll()) / editor.getRenderer().getScale());
 
+                //Don't let them drag nodes off of the field.
                 if(x < 0 || x >= editor.getCurrentField().getWidth() || y < 0 || y >= editor.getCurrentField().getHeight()){
                     return;
                 }
@@ -142,9 +146,11 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
         boolean shouldRender = false;
 
         if(editor.getCurrentField() != null){
+            //Translate mouse coordinates to coordinates relative to field.
             int x = (int) ((e.getX() - editor.getRenderer().getXScroll()) / editor.getRenderer().getScale());
             int y = (int) ((e.getY() - editor.getRenderer().getYScroll()) / editor.getRenderer().getScale());
 
+            //When finding hovered node, prioritize path nodes.
             EditorNode prospectHovered = null;
             if(editor.getCurrentPath() != null){
                 prospectHovered = editor.getCurrentPath().getNodeAt(x, y);
@@ -183,6 +189,8 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
             double newScale = editor.getRenderer().getScale() - zoomAmount;
 
             if(newScale > 0.5 && newScale < 10){
+                //Zoom so that the relative position of the mouse on the field remains the same.
+                //(aka zoom "towards" the mouse position")
                 double oldWidth = (editor.getCurrentField().getWidth() * editor.getRenderer().getScale());
                 double newWidth = (editor.getCurrentField().getWidth() * newScale);
                 double oldHeight = (editor.getCurrentField().getHeight() * editor.getRenderer().getScale());

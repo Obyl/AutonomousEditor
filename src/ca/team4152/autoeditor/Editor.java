@@ -35,6 +35,7 @@ public class Editor{
         currentPath.addNode(new PathNode(130, 180));
         currentPath.addNode(new PathNode(170, 100));
 
+        //Keep trying to render field until we succeed.
         new Thread(new Runnable() {
             @Override
             public void run() {
