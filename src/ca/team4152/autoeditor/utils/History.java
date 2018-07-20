@@ -11,7 +11,9 @@ public class History {
         if(changeHistory.size() >= maxHistoryLength){
             changeHistory.remove(changeHistory.size() - 1);
         }
-        for(HistoryItem item : changeHistory){
+
+        if(changeHistory.size() > 0){
+            HistoryItem item = changeHistory.get(0);
             if(item.getChangedId() == newItem.getChangedId() &&
                     item.getPreviousX0() == newItem.getPreviousX0() &&
                     item.getPreviousY0() == newItem.getPreviousY0() &&
@@ -20,6 +22,7 @@ public class History {
                 return;
             }
         }
+
         changeHistory.add(0, newItem);
     }
 
