@@ -8,15 +8,22 @@ public class CollisionBox extends EditorNode{
 
     @Override
     public boolean intersects(int x, int y) {
-        if(x >= getX0() - 2 && x < getX0() + 2 && y >= getY0() - 2 && y < getY0() + 2){
-            return true;
-        }else if(x >= getX1() - 2 && x < getX1() + 2 && y >= getY0() - 2 && y < getY0() + 2){
-            return true;
-        }else if(x >= getX0() - 2 && x < getX0() + 2 && y >= getY1() - 2 && y < getY1() + 2){
-            return true;
-        }else if(x >= getX1() - 2 && x < getX1() + 2 && y >= getY1() - 2 && y < getY1() + 2){
-            return true;
+        if(isSelected()){
+            if(x >= getX0() - 3 && x < getX0() + 3 && y >= getY0() - 3 && y < getY0() + 3){
+                return true;
+            }else if(x >= getX1() - 3 && x < getX1() + 3 && y >= getY0() - 3 && y < getY0() + 3){
+                return true;
+            }else if(x >= getX0() - 3 && x < getX0() + 3 && y >= getY1() - 3 && y < getY1() + 3){
+                return true;
+            }else if(x >= getX1() - 3 && x < getX1() + 3 && y >= getY1() - 3 && y < getY1() + 3){
+                return true;
+            }
+        }else{
+            if(x >= getX0() && x < getX1() && y >= getY0() && y < getY1()){
+                return true;
+            }
         }
+
         return false;
     }
 }

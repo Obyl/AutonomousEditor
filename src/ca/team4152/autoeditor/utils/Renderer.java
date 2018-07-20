@@ -11,10 +11,7 @@ public class Renderer {
 
     private final int WINDOW_BACKGROUND = 0xEEEEEE;
     private final int FIELD_BACKGROUND = 0xffffff;
-    private final int COLLISION_BOX_FILL = 0x000000;
-    private final int COLLISION_BOX_NORMAL = 0x000000;
-    private final int COLLISION_BOX_HOVER = 0x7A7A7A;
-    private final int COLLISION_BOX_SELECT = 0x505050;
+    private final int COLLISION_BOX = 0x000000;
     private final int PATH_NODE_FILL = 0x366AA6;
     private final int PATH_NODE_NORMAL = 0x366AA6;
     private final int PATH_NODE_HOVER = 0x4D96EA;
@@ -62,13 +59,7 @@ public class Renderer {
                         }
 
                         if(currentFieldBox != null){
-                            if(currentFieldBox.isSelected()){
-                                properColor = COLLISION_BOX_SELECT;
-                            }else if(currentFieldBox.isHovered()){
-                                properColor = COLLISION_BOX_HOVER;
-                            }else{
-                                properColor = COLLISION_BOX_NORMAL;
-                            }
+                            properColor = COLLISION_BOX;
                         }
                         if(currentPathNode != null){
                             if(currentPathNode.isSelected()){
@@ -98,6 +89,10 @@ public class Renderer {
     private void drawCollisionBoxes(){
         for(EditorNode node : editor.getCurrentField().getNodes()){
             CollisionBox box = (CollisionBox) node;
+
+            if(!box.isSelected()){
+                return;
+            }
 
             int x0;
             int y0;
@@ -130,7 +125,7 @@ public class Renderer {
                     if(x >= 0 && x < editor.getWindowWidth() &&
                             y >= 0 && y < editor.getWindowHeight() &&
                             pixels[x + y * editor.getWindowWidth()] == FIELD_BACKGROUND){
-                        pixels[x + y * editor.getWindowWidth()] = COLLISION_BOX_FILL;
+                        pixels[x + y * editor.getWindowWidth()] = COLLISION_BOX;
                     }
                 }
             }
@@ -192,7 +187,7 @@ public class Renderer {
                                 int arrayIndex = yp + xp * editor.getWindowWidth();
                                 int currentColor = pixels[arrayIndex];
 
-                                if(currentColor == FIELD_BACKGROUND || currentColor == COLLISION_BOX_FILL){
+                                if(currentColor == FIELD_BACKGROUND || currentColor == COLLISION_BOX){
                                     pixels[arrayIndex] = PATH_NODE_FILL;
                                 }
                             }
@@ -201,7 +196,7 @@ public class Renderer {
                                 int arrayIndex = xp + yp * editor.getWindowWidth();
                                 int currentColor = pixels[arrayIndex];
 
-                                if(currentColor == FIELD_BACKGROUND || currentColor == COLLISION_BOX_FILL){
+                                if(currentColor == FIELD_BACKGROUND || currentColor == COLLISION_BOX){
                                     pixels[arrayIndex] = PATH_NODE_FILL;
                                 }
                             }
