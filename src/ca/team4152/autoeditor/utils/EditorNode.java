@@ -1,6 +1,12 @@
 package ca.team4152.autoeditor.utils;
 
+import java.util.ArrayList;
+
 public abstract class EditorNode {
+
+    private static ArrayList<EditorNode> allNodes = new ArrayList<>();
+    private static int nextId = 0;
+    private int id;
 
     private int x0;
     private int y0;
@@ -15,6 +21,13 @@ public abstract class EditorNode {
         this.y0 = y0;
         this.x1 = x1;
         this.y1 = y1;
+
+        id = nextId++;
+        allNodes.add(this);
+    }
+
+    public int getId(){
+        return id;
     }
 
     public int getX0() {
@@ -67,4 +80,7 @@ public abstract class EditorNode {
 
     public abstract boolean intersects(int x, int y);
 
+    public static EditorNode getNode(int id){
+        return allNodes.get(id);
+    }
 }

@@ -54,6 +54,12 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
             }
         }
 
+        if(currentSelected != null){
+            History.addHistoryItem(new HistoryItem(currentSelected.getId(),
+                                                    currentSelected.getX0(), currentSelected.getY0(),
+                                                    currentSelected.getX1(), currentHovered.getY1()));
+        }
+
         if(shouldRender){
             editor.render();
         }
@@ -201,6 +207,22 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_CONTROL){
             ctrlDown = true;
+        }else if(e.getKeyCode() == KeyEvent.VK_Z){
+            if(ctrlDown){
+                HistoryItem newestItem = History.getNewestItem();
+
+                if(newestItem == null){
+                    return;
+                }
+
+                EditorNode changedNode = EditorNode.getNode(newestItem.getChangedId());
+                changedNode.setX0(newestItem.getPreviousX0());
+                changedNode.setY0(newestItem.getPreviousY0());
+                changedNode.setX1(newestItem.getPreviousX1());
+                changedNode.setY1(newestItem.getPreviousY1());
+
+                editor.render();
+            }
         }
     }
 
