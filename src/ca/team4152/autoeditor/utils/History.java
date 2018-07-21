@@ -37,10 +37,18 @@ public class History {
         HistoryItem newestItem = changeHistory.get(0);
         changeHistory.remove(0);
 
-        EditorNode changedNode = EditorNode.getNode(newestItem.getChangedId());
-        changedNode.setX0(newestItem.getPreviousX0());
-        changedNode.setY0(newestItem.getPreviousY0());
-        changedNode.setX1(newestItem.getPreviousX1());
-        changedNode.setY1(newestItem.getPreviousY1());
+        switch (newestItem.getItemType()){
+            case HistoryItem.EDIT:
+                EditorNode changedNode = EditorNode.getNode(newestItem.getChangedId());
+                changedNode.setX0(newestItem.getPreviousX0());
+                changedNode.setY0(newestItem.getPreviousY0());
+                changedNode.setX1(newestItem.getPreviousX1());
+                changedNode.setY1(newestItem.getPreviousY1());
+                break;
+            case HistoryItem.CREATE:
+                break;
+            case HistoryItem.DELETE:
+                break;
+        }
     }
 }

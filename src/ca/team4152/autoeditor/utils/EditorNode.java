@@ -8,6 +8,8 @@ public abstract class EditorNode {
     private static int nextId = 0;
     private int id;
 
+    private EditorComponent parent;
+
     private int x0;
     private int y0;
     private int x1;
@@ -86,6 +88,14 @@ public abstract class EditorNode {
     public EditorNode setAnchored(boolean anchored){
         this.anchored = anchored;
         return this;
+    }
+
+    public EditorComponent getParent(){
+        return parent;
+    }
+
+    public void setParent(EditorComponent parent){
+        this.parent = parent;
     }
 
     public abstract boolean intersects(int x, int y);

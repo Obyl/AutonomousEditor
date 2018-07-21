@@ -30,6 +30,7 @@ public abstract class EditorComponent {
 
     public void addNode(EditorNode node){
         nodes.add(node);
+        node.setParent(this);
     }
 
     public void addNode(EditorNode node, EditorNode after){
@@ -44,6 +45,7 @@ public abstract class EditorComponent {
         }
 
         nodes.add(addIndex, node);
+        node.setParent(this);
     }
 
     public void removeNode(EditorNode node){

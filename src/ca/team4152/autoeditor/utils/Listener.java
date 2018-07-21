@@ -62,9 +62,7 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
         }
 
         if(currentSelected != null){
-            History.addHistoryItem(new HistoryItem(currentSelected.getId(),
-                                                    currentSelected.getX0(), currentSelected.getY0(),
-                                                    currentSelected.getX1(), currentSelected.getY1()));
+            History.addHistoryItem(new HistoryItem(HistoryItem.EDIT, currentSelected));
         }
 
         if(shouldRender){
@@ -185,14 +183,40 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_CONTROL){
+        int keycode = e.getKeyCode();
+
+        if(keycode == KeyEvent.VK_CONTROL){
             ctrlDown = true;
-        }else if(e.getKeyCode() == KeyEvent.VK_Z){
-            if(ctrlDown){
-                History.undoLast();
-                editor.render();
-            }
         }
+        if(!ctrlDown){
+            return;
+        }
+
+        switch (keycode){
+            case KeyEvent.VK_Z:
+                History.undoLast();
+                break;
+            case KeyEvent.VK_C:
+                if(currentSelected instanceof CollisionBox){
+                    Clipboard.copy((CollisionBox) currentSelected);
+                }
+                break;
+            case KeyEvent.VK_X:
+                if(currentSelected instanceof CollisionBox){
+                    Clipboard.cut((CollisionBox) currentSelected, editor);
+                }
+                break;
+            case KeyEvent.VK_V:
+                int x = (int) ((lastMouseX - editor.getRenderer().getXScroll()) / editor.getRenderer().getScale());
+                int y = (int) ((lastMouseY - editor.getRenderer().getYScroll()) / editor.getRenderer().getScale());
+
+                if(x >= 0 || x < editor.getCurrentField().getWidth() || y >= 0 || y < editor.getCurrentField().getHeight()){
+                    Clipboard.paste(x, y, editor);
+                }
+                break;
+        }
+
+        editor.render();
     }
 
     @Override
