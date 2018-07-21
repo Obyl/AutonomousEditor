@@ -52,7 +52,9 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
                 currentSelected = prospectSelected;
 
                 if(currentSelected != null){
-                    currentSelected.setSelected(true);
+                    if(!currentSelected.isAnchored()){
+                        currentSelected.setSelected(true);
+                    }
                 }
 
                 shouldRender = true;
@@ -85,7 +87,9 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
                     return;
                 }
 
-                currentSelected.handleMouseDrag(x, y, newDrag);
+                if(!currentSelected.isAnchored()){
+                    currentSelected.handleMouseDrag(x, y, newDrag);
+                }
 
                 shouldRender = true;
             }else{
@@ -133,7 +137,9 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
                 currentHovered = prospectHovered;
 
                 if(currentHovered != null){
-                    currentHovered.setHovered(true);
+                    if(!currentHovered.isAnchored()){
+                        currentHovered.setHovered(true);
+                    }
                 }
 
                 shouldRender = true;

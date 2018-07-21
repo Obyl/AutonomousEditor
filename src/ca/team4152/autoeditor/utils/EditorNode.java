@@ -15,6 +15,7 @@ public abstract class EditorNode {
 
     private boolean hovered;
     private boolean selected;
+    private boolean anchored;
 
     public EditorNode(int x0, int y0, int x1, int y1) {
         this.x0 = x0;
@@ -76,6 +77,15 @@ public abstract class EditorNode {
 
     public void setSelected(boolean selected){
         this.selected = selected;
+    }
+
+    public boolean isAnchored(){
+        return anchored;
+    }
+
+    public EditorNode setAnchored(boolean anchored){
+        this.anchored = anchored;
+        return this;
     }
 
     public abstract boolean intersects(int x, int y);
