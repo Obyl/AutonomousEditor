@@ -77,9 +77,6 @@ public class Renderer {
                     pixels[x + y * editor.getWindowWidth()] = properColor;
                 }
             }
-
-            //Draws the interior of the currently selected collision box.
-            drawCollisionBoxes();
         }
 
         if(currentPath != null){
@@ -91,52 +88,6 @@ public class Renderer {
         renderedSuccessfully = true;
     }
 
-    private void drawCollisionBoxes(){
-        for(EditorNode node : editor.getCurrentField().getNodes()){
-            CollisionBox box = (CollisionBox) node;
-
-            if(!box.isSelected()){
-                return;
-            }
-
-            int x0;
-            int y0;
-            int x1;
-            int y1;
-
-            if(box.getX0() < box.getX1()){
-                x0 = box.getX0();
-                x1 = box.getX1();
-            }else{
-                x0 = box.getX1();
-                x1 = box.getX0();
-            }
-
-            if(box.getY0() < box.getY1()){
-                y0 = box.getY0();
-                y1 = box.getY1();
-            }else{
-                y0 = box.getY1();
-                y1 = box.getY0();
-            }
-
-            x0 = (int) ((scale * x0) + xScroll);
-            y0 = (int) ((scale * y0) + yScroll);
-            x1 = (int) ((scale * x1) + xScroll);
-            y1 = (int) ((scale * y1) + yScroll);
-
-            for(int y = y0; y < y1; y++){
-                for(int x = x0; x < x1; x++){
-                    if(x >= 0 && x < editor.getWindowWidth() &&
-                            y >= 0 && y < editor.getWindowHeight() &&
-                            pixels[x + y * editor.getWindowWidth()] == FIELD_BACKGROUND){
-                        pixels[x + y * editor.getWindowWidth()] = COLLISION_BOX;
-                    }
-                }
-            }
-        }
-    }
-
     private void drawPathNodes(){
         ArrayList<EditorNode> nodes = editor.getCurrentPath().getNodes();
         PathNode currentNode;
@@ -145,10 +96,10 @@ public class Renderer {
             currentNode = nextNode;
             nextNode = (PathNode) nodes.get(i + 1);
 
-            int x0 = (int) ((scale * currentNode.getX()) + xScroll);
-            int y0 = (int) ((scale * currentNode.getY()) + yScroll);
-            int x1 = (int) ((scale * nextNode.getX()) + xScroll);
-            int y1 = (int) ((scale * nextNode.getY()) + yScroll);
+            int x0 = (int) ((scale * currentNode.getX0()) + xScroll);
+            int y0 = (int) ((scale * currentNode.getY0()) + yScroll);
+            int x1 = (int) ((scale * nextNode.getX0()) + xScroll);
+            int y1 = (int) ((scale * nextNode.getY0()) + yScroll);
 
             boolean steep = false;
 

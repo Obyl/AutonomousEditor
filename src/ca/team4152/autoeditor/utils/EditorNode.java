@@ -80,6 +80,8 @@ public abstract class EditorNode {
 
     public abstract boolean intersects(int x, int y);
 
+    public abstract void handleMouseDrag(int x, int y, boolean newDrag);
+
     public static EditorNode getNode(int id){
         EditorNode result = null;
 

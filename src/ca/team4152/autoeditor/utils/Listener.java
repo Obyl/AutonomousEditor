@@ -18,6 +18,7 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
     private int lastMouseX;
     private int lastMouseY;
     private boolean ctrlDown;
+    private boolean newDrag;
 
     public Listener(Editor editor){
         this.editor = editor;
@@ -26,6 +27,8 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
     @Override
     public void mousePressed(MouseEvent e) {
         boolean shouldRender = false;
+
+        newDrag = true;
 
         if(editor.getCurrentField() != null){
             //Translate mouse coordinates to coordinates relative to field.
@@ -59,7 +62,7 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
         if(currentSelected != null){
             History.addHistoryItem(new HistoryItem(currentSelected.getId(),
                                                     currentSelected.getX0(), currentSelected.getY0(),
-                                                    currentSelected.getX1(), currentHovered.getY1()));
+                                                    currentSelected.getX1(), currentSelected.getY1()));
         }
 
         if(shouldRender){
@@ -82,47 +85,7 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
                     return;
                 }
 
-                if(currentSelected instanceof CollisionBox){
-                    CollisionBox box = (CollisionBox) currentSelected;
-
-                    int x0 = box.getX0();
-                    int y0 = box.getY0();
-                    int x1 = box.getX1();
-                    int y1 = box.getY1();
-
-                    if(Math.abs(x0 - x) < Math.abs(x1 - x)){
-                        x0 = x;
-                        if(ctrlDown){
-                            x1 = x + (box.getX1() - box.getX0());
-                        }
-                    }else{
-                        x1 = x;
-                        if(ctrlDown){
-                            x0 = x - (box.getX1() - box.getX0());
-                        }
-                    }
-
-                    if(Math.abs(y0 - y) < Math.abs(y1 - y)){
-                        y0 = y;
-                        if(ctrlDown){
-                            y1 = y + (box.getY1() - box.getY0());
-                        }
-                    }else{
-                        y1 = y;
-                        if(ctrlDown){
-                            y0 = y - (box.getY1() - box.getY0());
-                        }
-                    }
-
-                    box.setX0(x0);
-                    box.setY0(y0);
-                    box.setX1(x1);
-                    box.setY1(y1);
-                }else if(currentSelected instanceof PathNode){
-                    PathNode node = (PathNode) currentSelected;
-                    node.setX(x);
-                    node.setY(y);
-                }
+                currentSelected.handleMouseDrag(x, y, newDrag);
 
                 shouldRender = true;
             }else{
@@ -138,6 +101,9 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 
         if(shouldRender){
             editor.render();
+        }
+        if(newDrag){
+            newDrag = false;
         }
     }
 
@@ -248,6 +214,5 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 
     @Override
     public void keyTyped(KeyEvent e) {
-
     }
 }
