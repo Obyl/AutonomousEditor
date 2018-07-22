@@ -31,13 +31,13 @@ public class Editor {
         //Keep trying to render field until we succeed.
         new Thread(() -> {
             while(!renderer.hasRenderedSuccessfully()){
-                render();
-
                 try {
                     Thread.sleep(10);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
+                render();
             }
         }, "First Render").start();
     }
