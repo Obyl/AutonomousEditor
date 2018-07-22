@@ -43,12 +43,8 @@ public class Editor {
     }
 
     public void render(){
-        if(window == null){
+        if(window == null || renderer == null)
             return;
-        }
-        if(renderer == null){
-            return;
-        }
 
         BufferStrategy bs = window.getBufferStrategy();
         if(bs == null){
