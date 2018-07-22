@@ -120,6 +120,7 @@ public abstract class EditorNode {
 
         for(EditorNode node : allNodes){
             if(node.getId() == id){
+                node.getParent().removeNode(node);
                 allNodes.remove(index);
                 return;
             }

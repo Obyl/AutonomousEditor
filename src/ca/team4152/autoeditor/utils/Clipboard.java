@@ -24,7 +24,6 @@ public class Clipboard{
         copy(box);
 
         editor.getCurrentField().removeNode(box);
-        EditorNode.removeNode(box.getId());
 
         History.addHistoryItem(new HistoryItem(HistoryItem.DELETE, box));
     }

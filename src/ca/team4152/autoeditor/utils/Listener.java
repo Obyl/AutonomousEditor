@@ -194,7 +194,7 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 
         switch (keycode){
             case KeyEvent.VK_Z:
-                History.undoLast();
+                History.undoLast(editor);
                 break;
             case KeyEvent.VK_C:
                 if(currentSelected instanceof CollisionBox){
