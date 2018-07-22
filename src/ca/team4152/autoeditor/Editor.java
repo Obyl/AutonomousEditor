@@ -1,19 +1,22 @@
 package ca.team4152.autoeditor;
 
-import ca.team4152.autoeditor.utils.CollisionBox;
-import ca.team4152.autoeditor.utils.PathNode;
-import ca.team4152.autoeditor.utils.Renderer;
-import ca.team4152.autoeditor.utils.RobotPath;
-import ca.team4152.autoeditor.utils.Field;
+import ca.team4152.autoeditor.utils.display.EditorWindow;
+import ca.team4152.autoeditor.utils.display.Renderer;
+import ca.team4152.autoeditor.utils.editor.CollisionBox;
+import ca.team4152.autoeditor.utils.editor.Field;
+import ca.team4152.autoeditor.utils.editor.PathNode;
+import ca.team4152.autoeditor.utils.editor.RobotPath;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
-public class Editor{
+public class Editor {
 
-    private final int WINDOW_WIDTH = 1000;
-    private final int WINDOW_HEIGHT = 700;
+    private static final int WINDOW_WIDTH = 1000;
+    private static final int WINDOW_HEIGHT = 700;
+
+    private static Editor instance;
 
     private EditorWindow window;
     private Renderer renderer;
@@ -21,32 +24,19 @@ public class Editor{
     private Field currentField;
     private RobotPath currentPath;
 
-    public Editor(){
-        window = new EditorWindow(this);
-        renderer = new Renderer(this);
-
-        renderer.setScale(2);
-
-        setCurrentField(new Field("unnamed_field", 200, 200));
-        currentField.addNode(new CollisionBox(10, 10, 100, 100));
-
-        setCurrentPath(new RobotPath("unnamed_path"));
-        currentPath.addNode(new PathNode(30, 130));
-        currentPath.addNode(new PathNode(130, 180));
-        currentPath.addNode(new PathNode(170, 100));
+    private Editor(){
+        window = new EditorWindow();
+        renderer = new Renderer();
 
         //Keep trying to render field until we succeed.
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while(!renderer.hasRenderedSuccessfully()){
-                    render();
+        new Thread(() -> {
+            while(!renderer.hasRenderedSuccessfully()){
+                render();
 
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         }, "First Render").start();
@@ -76,35 +66,31 @@ public class Editor{
         bs.show();
     }
 
-    public int getWindowWidth(){
-        return WINDOW_WIDTH;
+    public static Editor getInstance(){ return instance; }
+    public static int getWindowWidth(){ return WINDOW_WIDTH; }
+    public static int getWindowHeight(){ return WINDOW_HEIGHT; }
+    public static Renderer getRenderer(){ return instance.renderer; }
+    public static Field getCurrentField(){ return instance.currentField; }
+    public static RobotPath getCurrentPath(){ return instance.currentPath; }
+    public static void setCurrentPath(RobotPath path){ instance.currentPath = path; }
+
+    public static void setCurrentField(Field field){
+        instance.currentField = field;
+        if(field != null)
+            getRenderer().center();
     }
 
-    public int getWindowHeight(){
-        return WINDOW_HEIGHT;
-    }
+    public static void init(){
+        instance = new Editor();
 
-    public Field getCurrentField(){
-        return currentField;
-    }
+        getRenderer().setScale(2);
 
-    public void setCurrentField(Field field){
-        this.currentField = field;
-        if(field != null){
-            renderer.center();
-        }
-    }
+        setCurrentField(new Field("unnamed_field", 200, 200));
+        getCurrentField().addNode(new CollisionBox(10, 10, 100, 100));
 
-    public RobotPath getCurrentPath(){
-        return currentPath;
+        setCurrentPath(new RobotPath("unnamed_path"));
+        getCurrentPath().addNode(new PathNode(30, 130));
+        getCurrentPath().addNode(new PathNode(130, 180));
+        getCurrentPath().addNode(new PathNode(170, 100));
     }
-
-    public void setCurrentPath(RobotPath path){
-        this.currentPath = path;
-    }
-
-    public Renderer getRenderer(){
-        return renderer;
-    }
-
 }

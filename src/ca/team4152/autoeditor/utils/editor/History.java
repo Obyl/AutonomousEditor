@@ -1,4 +1,4 @@
-package ca.team4152.autoeditor.utils;
+package ca.team4152.autoeditor.utils.editor;
 
 import ca.team4152.autoeditor.Editor;
 
@@ -6,13 +6,10 @@ import java.util.ArrayList;
 
 public class History {
 
-    private static int maxHistoryLength = 20;
     private static ArrayList<HistoryItem> changeHistory = new ArrayList<>();
 
-    public static void addHistoryItem(HistoryItem newItem){
-        if(changeHistory.size() >= maxHistoryLength){
-            changeHistory.remove(changeHistory.size() - 1);
-        }
+    public static void addHistoryItem(int itemType, EditorNode regarding){
+        HistoryItem newItem = new HistoryItem(itemType, regarding);
 
         if(changeHistory.size() > 0 && newItem.getItemType() == HistoryItem.EDIT){
             HistoryItem item = changeHistory.get(0);
@@ -31,7 +28,7 @@ public class History {
         changeHistory.add(0, newItem);
     }
 
-    public static void undoLast(Editor editor){
+    public static void undoLast(){
         if(changeHistory.size() < 1){
             return;
         }
@@ -49,12 +46,12 @@ public class History {
                 changedNode.setY1(newestItem.getPreviousY1());
                 break;
             case HistoryItem.CREATE:
-                EditorNode.removeNode(changedNode.getId());
+                if(changedNode instanceof CollisionBox)
+                    Editor.getCurrentField().removeNode(changedNode);
                 break;
             case HistoryItem.DELETE:
-                if(changedNode instanceof CollisionBox){
-                    editor.getCurrentField().addNode(new CollisionBox(changedNode.getX0(), changedNode.getY0(), changedNode.getX1(), changedNode.getY1()));
-                }
+                if(changedNode instanceof CollisionBox)
+                    Editor.getCurrentField().addNode(changedNode);
                 break;
         }
     }

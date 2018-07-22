@@ -1,4 +1,4 @@
-package ca.team4152.autoeditor.utils;
+package ca.team4152.autoeditor.utils.editor;
 
 public class PathNode extends EditorNode{
 

@@ -1,4 +1,4 @@
-package ca.team4152.autoeditor.utils;
+package ca.team4152.autoeditor.utils.editor;
 
 public class CollisionBox extends EditorNode{
 
@@ -28,6 +28,7 @@ public class CollisionBox extends EditorNode{
         if(newDrag){
             oldMouseX = x;
             oldMouseY = y;
+            draggingCorner = false;
         }
 
         int x0 = getX0();
@@ -35,24 +36,18 @@ public class CollisionBox extends EditorNode{
         int x1 = getX1();
         int y1 = getY1();
 
-        if(newDrag){
-            draggingCorner = false;
-        }
-
         if(draggingCorner || inCorner){
             draggingCorner = true;
 
-            if(Math.abs(x0 - x) < Math.abs(x1 - x)){
+            if(Math.abs(x0 - x) < Math.abs(x1 - x))
                 x0 = x;
-            }else{
+            else
                 x1 = x;
-            }
 
-            if(Math.abs(y0 - y) < Math.abs(y1 - y)){
+            if(Math.abs(y0 - y) < Math.abs(y1 - y))
                 y0 = y;
-            }else{
+            else
                 y1 = y;
-            }
         }else{
             int xInc = x - oldMouseX;
             int yInc = y - oldMouseY;

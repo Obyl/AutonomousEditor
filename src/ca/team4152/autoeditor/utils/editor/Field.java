@@ -1,4 +1,4 @@
-package ca.team4152.autoeditor.utils;
+package ca.team4152.autoeditor.utils.editor;
 
 public class Field extends EditorComponent{
 
@@ -12,12 +12,6 @@ public class Field extends EditorComponent{
         this.height = height;
     }
 
-    public int getWidth(){
-        return width;
-    }
-
-    public int getHeight(){
-        return height;
-    }
-
+    public int getWidth(){ return width; }
+    public int getHeight(){ return height; }
 }

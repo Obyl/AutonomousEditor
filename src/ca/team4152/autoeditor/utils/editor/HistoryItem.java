@@ -1,4 +1,4 @@
-package ca.team4152.autoeditor.utils;
+package ca.team4152.autoeditor.utils.editor;
 
 public class HistoryItem {
 
@@ -22,27 +22,10 @@ public class HistoryItem {
         this.previousY1 = node.getY1();
     }
 
-    public int getItemType(){
-        return itemType;
-    }
-
-    public int getChangedId() {
-        return changedId;
-    }
-
-    public int getPreviousX0() {
-        return previousX0;
-    }
-
-    public int getPreviousY0() {
-        return previousY0;
-    }
-
-    public int getPreviousX1() {
-        return previousX1;
-    }
-
-    public int getPreviousY1() {
-        return previousY1;
-    }
+    public int getItemType(){ return itemType; }
+    public int getChangedId(){ return changedId; }
+    public int getPreviousX0(){ return previousX0; }
+    public int getPreviousY0(){ return previousY0; }
+    public int getPreviousX1(){ return previousX1; }
+    public int getPreviousY1(){ return previousY1; }
 }
