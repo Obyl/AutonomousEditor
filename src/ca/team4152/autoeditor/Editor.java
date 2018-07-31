@@ -7,7 +7,6 @@ import ca.team4152.autoeditor.utils.editor.Field;
 import ca.team4152.autoeditor.utils.editor.PathNode;
 import ca.team4152.autoeditor.utils.editor.RobotPath;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
@@ -53,8 +52,6 @@ public class Editor {
         }
 
         Graphics g = bs.getDrawGraphics();
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, getWindowWidth(), getWindowHeight());
 
         renderer.render(g);
 
