@@ -4,8 +4,12 @@ public class CollisionBox extends EditorNode{
 
     private int oldMouseX = -1;
     private int oldMouseY = -1;
+    private int xMidpoint;
+    private int yMidpoint;
     private boolean draggingCorner;
+    private int draggingSide;
     private boolean inCorner;
+    private boolean inSide;
 
     public CollisionBox(int x0, int y0, int x1, int y1) {
         super(x0, y0, x1, y1);
@@ -14,13 +18,20 @@ public class CollisionBox extends EditorNode{
     @Override
     public boolean intersects(int x, int y) {
         if(isSelected()){
-            //If it's selected, extend the corners a little bit to make it clear where you need to click.
+            //If it's selected, extend the corners and side midpoints a little bit to make it clear where you need to click.
             inCorner = (x >= getX0() - 3 && x < getX0() + 3 && y >= getY0() - 3 && y < getY0() + 3) ||
                     (x >= getX1() - 3 && x < getX1() + 3 && y >= getY0() - 3 && y < getY0() + 3) ||
                     (x >= getX0() - 3 && x < getX0() + 3 && y >= getY1() - 3 && y < getY1() + 3) ||
                     (x >= getX1() - 3 && x < getX1() + 3 && y >= getY1() - 3 && y < getY1() + 3);
+
+            xMidpoint = getX0() + (getX1() - getX0()) / 2;
+            yMidpoint = getY0() + (getY1() - getY0()) / 2;
+            inSide = (x >= xMidpoint - 3 && x < xMidpoint + 3 && y >= getY0() - 3 && y < getY0() + 3) ||
+                    (x >= getX1() - 3 && x < getX1() + 3 && y >= yMidpoint - 3 && y < yMidpoint + 3) ||
+                    (x >= xMidpoint - 3 && x < xMidpoint + 3 && y >= getY1() - 3 && y < getY1() + 3) ||
+                    (x >= getX0() - 3 && x < getX0() + 3 && y >= yMidpoint - 3 && y < yMidpoint + 3);
         }
-        return inCorner || (x >= getX0() && x < getX1() && y >= getY0() && y < getY1());
+        return inCorner || inSide || (x >= getX0() && x < getX1() && y >= getY0() && y < getY1());
     }
 
     @Override
@@ -28,7 +39,8 @@ public class CollisionBox extends EditorNode{
         if(newDrag){
             oldMouseX = x;
             oldMouseY = y;
-            draggingCorner = false;
+            draggingCorner  = false;
+            draggingSide = -1;
         }
 
         int x0 = getX0();
@@ -48,6 +60,24 @@ public class CollisionBox extends EditorNode{
                 y0 = y;
             else
                 y1 = y;
+        }else if(draggingSide >= 0 || inSide){
+            if(x >= xMidpoint - 3 && x < xMidpoint + 3 && y >= getY0() - 3 && y < getY0() + 3)
+                draggingSide = 0;
+            else if(x >= getX1() - 3 && x < getX1() + 3 && y >= yMidpoint - 3 && y < yMidpoint + 3)
+                draggingSide = 1;
+            else if(x >= xMidpoint - 3 && x < xMidpoint + 3 && y >= getY1() - 3 && y < getY1() + 3)
+                draggingSide = 2;
+            else if(x >= getX0() - 3 && x < getX0() + 3 && y >= yMidpoint - 3 && y < yMidpoint + 3)
+                draggingSide = 3;
+
+            if(draggingSide == 0)
+                y0 = y;
+            else if(draggingSide == 1)
+                x1 = x;
+            else if(draggingSide == 2)
+                y1 = y;
+            else if(draggingSide == 3)
+                x0 = x;
         }else{
             int xInc = x - oldMouseX;
             int yInc = y - oldMouseY;
