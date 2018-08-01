@@ -94,6 +94,34 @@ public class CollisionBox extends EditorNode{
             y1 += yInc;
         }
 
+        if(x1 < x0){
+            int mid = x1;
+            x1 = x0;
+            x0 = mid;
+
+            if(dragMode % 2 == 0){
+                dragMode /= 2;
+                dragMode *= 3;
+            }else{
+                dragMode /= 3;
+                dragMode *= 2;
+            }
+        }
+        if(y1 < y0){
+            int mid = y1;
+            y1 = y0;
+            y0 = mid;
+
+            //Reverse drag modes.
+            if(dragMode % 5 == 0){
+                dragMode /= 5;
+                dragMode *= 7;
+            }else{
+                dragMode /= 7;
+                dragMode *= 5;
+            }
+        }
+
         setX0(x0);
         setY0(y0);
         setX1(x1);
