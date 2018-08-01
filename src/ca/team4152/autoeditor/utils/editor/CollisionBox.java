@@ -6,8 +6,8 @@ public class CollisionBox extends EditorNode{
     private int oldMouseY = -1;
     private int xMidpoint;
     private int yMidpoint;
-    private boolean draggingCorner;
-    private int draggingSide;
+    private boolean dragging;
+    private int dragMode;
     private boolean inCorner;
     private boolean inSide;
 
@@ -39,8 +39,8 @@ public class CollisionBox extends EditorNode{
         if(newDrag){
             oldMouseX = x;
             oldMouseY = y;
-            draggingCorner  = false;
-            draggingSide = -1;
+            dragging = false;
+            dragMode = 1;
         }
 
         int x0 = getX0();
@@ -48,36 +48,42 @@ public class CollisionBox extends EditorNode{
         int x1 = getX1();
         int y1 = getY1();
 
-        if(draggingCorner || inCorner){
-            draggingCorner = true;
+        //Tell the code which values to set depending on where the mouse is.
+        //Encode and decode these values using small prime numbers.
+        if(dragging || inCorner || inSide){
+            dragging = true;
 
-            if(Math.abs(x0 - x) < Math.abs(x1 - x))
+            if(inCorner){
+                if(Math.abs(x0 - x) < Math.abs(x1 - x))
+                    dragMode *= 2;
+                else
+                    dragMode *= 3;
+
+                if(Math.abs(y0 - y) < Math.abs(y1 - y))
+                    dragMode *= 5;
+                else
+                    dragMode *= 7;
+            }
+
+            if(inSide){
+                if(x >= xMidpoint - 3 && x < xMidpoint + 3 && y >= getY0() - 3 && y < getY0() + 3)
+                    dragMode *= 5;
+                else if(x >= getX1() - 3 && x < getX1() + 3 && y >= yMidpoint - 3 && y < yMidpoint + 3)
+                    dragMode *= 3;
+                else if(x >= xMidpoint - 3 && x < xMidpoint + 3 && y >= getY1() - 3 && y < getY1() + 3)
+                    dragMode *= 7;
+                else if(x >= getX0() - 3 && x < getX0() + 3 && y >= yMidpoint - 3 && y < yMidpoint + 3)
+                    dragMode *= 2;
+            }
+
+            if(dragMode % 2 == 0)
                 x0 = x;
-            else
+            if(dragMode % 3 == 0)
                 x1 = x;
-
-            if(Math.abs(y0 - y) < Math.abs(y1 - y))
+            if(dragMode % 5 == 0)
                 y0 = y;
-            else
+            if(dragMode % 7 == 0)
                 y1 = y;
-        }else if(draggingSide >= 0 || inSide){
-            if(x >= xMidpoint - 3 && x < xMidpoint + 3 && y >= getY0() - 3 && y < getY0() + 3)
-                draggingSide = 0;
-            else if(x >= getX1() - 3 && x < getX1() + 3 && y >= yMidpoint - 3 && y < yMidpoint + 3)
-                draggingSide = 1;
-            else if(x >= xMidpoint - 3 && x < xMidpoint + 3 && y >= getY1() - 3 && y < getY1() + 3)
-                draggingSide = 2;
-            else if(x >= getX0() - 3 && x < getX0() + 3 && y >= yMidpoint - 3 && y < yMidpoint + 3)
-                draggingSide = 3;
-
-            if(draggingSide == 0)
-                y0 = y;
-            else if(draggingSide == 1)
-                x1 = x;
-            else if(draggingSide == 2)
-                y1 = y;
-            else if(draggingSide == 3)
-                x0 = x;
         }else{
             int xInc = x - oldMouseX;
             int yInc = y - oldMouseY;
