@@ -39,4 +39,7 @@ public class Clipboard {
         }
     }
 
+    public static boolean hasBox(){
+        return hasBox;
+    }
 }

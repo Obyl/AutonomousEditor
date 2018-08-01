@@ -2,11 +2,13 @@ package ca.team4152.autoeditor.utils.display;
 
 import ca.team4152.autoeditor.Editor;
 import ca.team4152.autoeditor.utils.Listener;
+import ca.team4152.autoeditor.utils.ResourceLoader;
+import ca.team4152.autoeditor.utils.menu.EditorMenuBar;
 
 import javax.swing.JFrame;
+import javax.swing.UIManager;
 import java.awt.Canvas;
 import java.awt.Dimension;
-import java.awt.Toolkit;
 
 public class EditorWindow extends Canvas{
 
@@ -25,8 +27,14 @@ public class EditorWindow extends Canvas{
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
-        frame.setIconImage(Toolkit.getDefaultToolkit()
-                .getImage(EditorWindow.class.getResource("/icon.png")));
+        frame.setIconImage(ResourceLoader.getImageIcon("window_icon").getImage());
+
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        frame.setJMenuBar(new EditorMenuBar());
 
         frame.setVisible(true);
     }
