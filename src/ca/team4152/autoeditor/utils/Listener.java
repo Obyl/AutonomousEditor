@@ -6,6 +6,7 @@ import ca.team4152.autoeditor.utils.editor.CollisionBox;
 import ca.team4152.autoeditor.utils.editor.EditorNode;
 import ca.team4152.autoeditor.utils.editor.History;
 import ca.team4152.autoeditor.utils.editor.HistoryItem;
+import ca.team4152.autoeditor.utils.editor.PathNode;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -33,6 +34,15 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 
         if(keycode == KeyEvent.VK_CONTROL)
             ctrlDown = true;
+        else if(keycode == KeyEvent.VK_DELETE) {
+            if (currentSelected instanceof CollisionBox)
+                Editor.getCurrentField().removeNode(currentSelected);
+            else if (currentSelected instanceof PathNode)
+                Editor.getCurrentPath().removeNode(currentSelected);
+            Editor.getInstance().render();
+            return;
+        }
+
         if(!ctrlDown)
             return;
 

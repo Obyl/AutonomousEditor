@@ -84,6 +84,10 @@ public class Renderer {
 
     private void drawPathNodes(){
         ArrayList<EditorNode> nodes = Editor.getCurrentPath().getNodes();
+
+        if(nodes.size() < 1)
+            return;
+
         PathNode currentNode;
         PathNode nextNode = (PathNode) nodes.get(0);
 
