@@ -1,6 +1,7 @@
 package ca.team4152.autoeditor.utils.editor;
 
 import ca.team4152.autoeditor.Editor;
+import ca.team4152.autoeditor.utils.menu.EditorMenu;
 
 public class Clipboard {
 
@@ -12,19 +13,22 @@ public class Clipboard {
 
     private Clipboard(){}
 
-    public static void copy(CollisionBox box){
+    public static void copy(CollisionBox box, int x, int y){
         hasBox = true;
         storedX0 = box.getX0();
         storedY0 = box.getY0();
         storedX1 = box.getX1();
         storedY1 = box.getY1();
+
+        EditorMenu.updateMenu("edit", box, x, y);
     }
 
-    public static void cut(CollisionBox box){
-        copy(box);
+    public static void cut(CollisionBox box, int x, int y){
+        copy(box, x, y);
 
         Editor.getCurrentField().removeNode(box);
         History.addHistoryItem(HistoryItem.DELETE, box);
+        EditorMenu.updateMenu("edit", null, x, y);
     }
 
     public static void paste(int x, int y){
@@ -36,6 +40,7 @@ public class Clipboard {
 
             Editor.getCurrentField().addNode(pastedBox);
             History.addHistoryItem(HistoryItem.CREATE, pastedBox);
+            EditorMenu.updateMenu("edit", pastedBox, x, y);
         }
     }
 

@@ -7,6 +7,7 @@ import ca.team4152.autoeditor.utils.editor.EditorNode;
 import ca.team4152.autoeditor.utils.editor.History;
 import ca.team4152.autoeditor.utils.editor.HistoryItem;
 import ca.team4152.autoeditor.utils.editor.PathNode;
+import ca.team4152.autoeditor.utils.menu.EditorMenu;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -31,6 +32,8 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
             return;
 
         int keycode = e.getKeyCode();
+        int x = (int) ((lastMouseX - Editor.getRenderer().getXScroll()) / Editor.getRenderer().getScale());
+        int y = (int) ((lastMouseY - Editor.getRenderer().getYScroll()) / Editor.getRenderer().getScale());
 
         if(keycode == KeyEvent.VK_CONTROL)
             ctrlDown = true;
@@ -52,16 +55,13 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
                 break;
             case KeyEvent.VK_C:
                 if(currentSelected instanceof CollisionBox)
-                    Clipboard.copy((CollisionBox) currentSelected);
+                    Clipboard.copy((CollisionBox) currentSelected, x, y);
                 break;
             case KeyEvent.VK_X:
                 if(currentSelected instanceof CollisionBox)
-                    Clipboard.cut((CollisionBox) currentSelected);
+                    Clipboard.cut((CollisionBox) currentSelected, x, y);
                 break;
             case KeyEvent.VK_V:
-                int x = (int) ((lastMouseX - Editor.getRenderer().getXScroll()) / Editor.getRenderer().getScale());
-                int y = (int) ((lastMouseY - Editor.getRenderer().getYScroll()) / Editor.getRenderer().getScale());
-
                 if(x >= 0 || x < Editor.getCurrentField().getWidth() || y >= 0 || y < Editor.getCurrentField().getHeight())
                     Clipboard.paste(x, y);
                 break;
@@ -113,6 +113,12 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 
         if(shouldRender)
             Editor.getInstance().render();
+
+        if(x < 0 || y < 0 || x >= Editor.getCurrentField().getWidth() || y >= Editor.getCurrentField().getHeight()){
+            x = 0;
+            y = 0;
+        }
+        EditorMenu.updateMenu("edit", currentSelected, x, y);
     }
 
     @Override
@@ -181,6 +187,12 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 
         if(shouldRender)
             Editor.getInstance().render();
+
+        if(x < 0 || y < 0 || x >= Editor.getCurrentField().getWidth() || y >= Editor.getCurrentField().getHeight()){
+            x = 0;
+            y = 0;
+        }
+        EditorMenu.updateMenu("edit", currentSelected, x, y);
     }
 
     @Override

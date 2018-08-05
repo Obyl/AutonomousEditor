@@ -1,8 +1,11 @@
 package ca.team4152.autoeditor.utils.menu;
 
+import ca.team4152.autoeditor.Editor;
 import ca.team4152.autoeditor.utils.ResourceLoader;
 import ca.team4152.autoeditor.utils.editor.Clipboard;
+import ca.team4152.autoeditor.utils.editor.CollisionBox;
 import ca.team4152.autoeditor.utils.editor.EditorNode;
+import ca.team4152.autoeditor.utils.editor.PathNode;
 
 import javax.swing.AbstractAction;
 import javax.swing.JMenu;
@@ -29,94 +32,101 @@ public class MenuEdit extends EditorMenu{
     protected void createMenuItems(){
         this.removeAll();
 
-        //"New" option in edit menu.
         newOption = new JMenu("New");
         newOption.setIcon(ResourceLoader.getImageIcon("new_icon"));
 
-        newBoxOption = new JMenuItem(new AbstractAction("New Collision Box", ResourceLoader.getImageIcon("collision_box_icon")) {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
+        newBoxOption = new JMenuItem();
         newOption.add(newBoxOption);
 
-        newNodeOption = new JMenuItem(new AbstractAction("New Path Node", ResourceLoader.getImageIcon("path_node_icon")) {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
+        newNodeOption = new JMenuItem();
         newOption.add(newNodeOption);
 
         add(newOption);
 
-        //"Delete" option in edit menu.
-        if(deleteNodeOption != null)
-            remove(deleteNodeOption);
-
-        deleteNodeOption = new JMenuItem(new AbstractAction("Delete", ResourceLoader.getImageIcon("delete_icon")) {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-
+        deleteNodeOption = new JMenuItem();
         add(deleteNodeOption);
 
         addSeparator();
 
-        if(cutOption != null)
-            remove(cutOption);
-        cutOption = new JMenuItem(new AbstractAction("Cut") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
+        cutOption = new JMenuItem();
         add(cutOption);
 
-        if(copyOption != null)
-            remove(copyOption);
-        copyOption = new JMenuItem(new AbstractAction("Copy") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
+        copyOption = new JMenuItem();
         add(copyOption);
 
-        pasteOption = new JMenuItem(new AbstractAction("Paste") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
+        pasteOption = new JMenuItem();
         add(pasteOption);
 
         addSeparator();
 
-        propertiesOption = new JMenuItem(new AbstractAction("Properties", ResourceLoader.getImageIcon("properties_icon")) {
+        propertiesOption = new JMenuItem();
+        add(propertiesOption);
+    }
+
+    @Override
+    protected void updateMenuItems(EditorNode currentSelected, int x, int y){
+        newBoxOption.setAction(new AbstractAction("New Collision Box", ResourceLoader.getImageIcon("collision_box_icon")) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Editor.getCurrentField().addNode(new CollisionBox(x - 25, y - 25, x + 25, y + 25));
+                Editor.getInstance().render();
+            }
+        });
+
+        newNodeOption.setAction(new AbstractAction("New Path Node", ResourceLoader.getImageIcon("path_node_icon")) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Editor.getCurrentPath().addNode(new PathNode(x, y));
+                Editor.getInstance().render();
+            }
+        });
+
+        deleteNodeOption.setAction(new AbstractAction("Delete", ResourceLoader.getImageIcon("delete_icon")) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (currentSelected instanceof CollisionBox)
+                    Editor.getCurrentField().removeNode(currentSelected);
+                else if (currentSelected instanceof PathNode)
+                    Editor.getCurrentPath().removeNode(currentSelected);
+                Editor.getInstance().render();
+            }
+        });
+
+        cutOption.setAction(new AbstractAction("Cut") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Clipboard.cut((CollisionBox) currentSelected, x, y);
+                Editor.getInstance().render();
+            }
+        });
+
+        copyOption.setAction(new AbstractAction("Copy") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Clipboard.copy((CollisionBox) currentSelected, x, y);
+                Editor.getInstance().render();
+            }
+        });
+
+        pasteOption.setAction(new AbstractAction("Paste") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Clipboard.paste(x, y);
+                Editor.getInstance().render();
+            }
+        });
+
+        propertiesOption.setAction(new AbstractAction("Properties") {
             @Override
             public void actionPerformed(ActionEvent e) {
 
             }
         });
-        add(propertiesOption);
 
-
-    }
-
-    @Override
-    protected void updateMenuItems(EditorNode currentSelected, int x, int y){
-        if(currentSelected == null){
-            deleteNodeOption.setEnabled(false);
-            cutOption.setEnabled(false);
-            copyOption.setEnabled(false);
-            propertiesOption.setEnabled(false);
-        }
-        if(!Clipboard.hasBox()){
-            pasteOption.setEnabled(false);
-        }
+        deleteNodeOption.setEnabled(currentSelected != null);
+        cutOption.setEnabled(currentSelected instanceof CollisionBox);
+        copyOption.setEnabled(currentSelected instanceof CollisionBox);
+        propertiesOption.setEnabled(currentSelected != null);
+        pasteOption.setEnabled(Clipboard.hasBox());
     }
 }
