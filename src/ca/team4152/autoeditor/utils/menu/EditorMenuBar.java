@@ -5,8 +5,8 @@ import javax.swing.JMenuBar;
 public class EditorMenuBar extends JMenuBar{
 
     public EditorMenuBar(){
-        add(new MenuFile());
-        add(new MenuEdit());
+        add(EditorMenu.getMenu("file"));
+        add(EditorMenu.getMenu("edit"));
     }
 
 }

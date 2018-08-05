@@ -9,7 +9,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.event.ActionEvent;
 
-public class MenuEdit extends JMenu{
+public class MenuEdit extends EditorMenu{
 
     private JMenu newOption;
 
@@ -21,21 +21,13 @@ public class MenuEdit extends JMenu{
     private JMenuItem pasteOption;
     private JMenuItem propertiesOption;
 
-    public MenuEdit(){
+    protected MenuEdit(){
         super("Edit");
-
-        createMenuItems(null, 0, 0);
     }
 
-    public void createMenuItems(EditorNode currentSelected, int x, int y){
-        //new
-        //delete
-        //line
-        //cut
-        //copy
-        //paste
-        //line
-        //properties
+    @Override
+    protected void createMenuItems(){
+        this.removeAll();
 
         //"New" option in edit menu.
         newOption = new JMenu("New");
@@ -69,8 +61,6 @@ public class MenuEdit extends JMenu{
 
             }
         });
-        if(currentSelected == null)
-            deleteNodeOption.setEnabled(false);
 
         add(deleteNodeOption);
 
@@ -114,6 +104,11 @@ public class MenuEdit extends JMenu{
         });
         add(propertiesOption);
 
+
+    }
+
+    @Override
+    protected void updateMenuItems(EditorNode currentSelected, int x, int y){
         if(currentSelected == null){
             deleteNodeOption.setEnabled(false);
             cutOption.setEnabled(false);
@@ -124,5 +119,4 @@ public class MenuEdit extends JMenu{
             pasteOption.setEnabled(false);
         }
     }
-
 }
