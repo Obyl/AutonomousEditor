@@ -60,6 +60,7 @@ public class Editor {
     }
 
     public static Editor getInstance(){ return instance; }
+    public static EditorWindow getWindow() { return instance.window; }
     public static int getWindowWidth(){ return WINDOW_WIDTH; }
     public static int getWindowHeight(){ return WINDOW_HEIGHT; }
     public static Renderer getRenderer(){ return instance.renderer; }

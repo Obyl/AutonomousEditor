@@ -22,7 +22,8 @@ public class MenuEdit extends EditorMenu{
     private JMenuItem cutOption;
     private JMenuItem copyOption;
     private JMenuItem pasteOption;
-    private JMenuItem propertiesOption;
+
+    private MenuProperties propertiesMenu;
 
     protected MenuEdit(){
         super("Edit");
@@ -59,8 +60,8 @@ public class MenuEdit extends EditorMenu{
 
         addSeparator();
 
-        propertiesOption = new JMenuItem();
-        add(propertiesOption);
+        propertiesMenu = new MenuProperties();
+        add(propertiesMenu.getAsItem());
     }
 
     @Override
@@ -116,17 +117,12 @@ public class MenuEdit extends EditorMenu{
             }
         });
 
-        propertiesOption.setAction(new AbstractAction("Properties") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
+        propertiesMenu.updateCurrentEditing(currentSelected);
 
         deleteNodeOption.setEnabled(currentSelected != null);
         cutOption.setEnabled(currentSelected instanceof CollisionBox);
         copyOption.setEnabled(currentSelected instanceof CollisionBox);
-        propertiesOption.setEnabled(currentSelected != null);
         pasteOption.setEnabled(Clipboard.hasBox());
+        propertiesMenu.getAsItem().setEnabled(currentSelected != null);
     }
 }

@@ -32,8 +32,8 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
             return;
 
         int keycode = e.getKeyCode();
-        int x = (int) ((lastMouseX - Editor.getRenderer().getXScroll()) / Editor.getRenderer().getScale());
-        int y = (int) ((lastMouseY - Editor.getRenderer().getYScroll()) / Editor.getRenderer().getScale());
+        int fieldX = (int) ((lastMouseX - Editor.getRenderer().getXScroll()) / Editor.getRenderer().getScale());
+        int fieldY = (int) ((lastMouseY - Editor.getRenderer().getYScroll()) / Editor.getRenderer().getScale());
 
         if(keycode == KeyEvent.VK_CONTROL)
             ctrlDown = true;
@@ -55,15 +55,15 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
                 break;
             case KeyEvent.VK_C:
                 if(currentSelected instanceof CollisionBox)
-                    Clipboard.copy((CollisionBox) currentSelected, x, y);
+                    Clipboard.copy((CollisionBox) currentSelected, fieldX, fieldY);
                 break;
             case KeyEvent.VK_X:
                 if(currentSelected instanceof CollisionBox)
-                    Clipboard.cut((CollisionBox) currentSelected, x, y);
+                    Clipboard.cut((CollisionBox) currentSelected, fieldX, fieldY);
                 break;
             case KeyEvent.VK_V:
-                if(x >= 0 || x < Editor.getCurrentField().getWidth() || y >= 0 || y < Editor.getCurrentField().getHeight())
-                    Clipboard.paste(x, y);
+                if(fieldX >= 0 || fieldX < Editor.getCurrentField().getWidth() || fieldY >= 0 || fieldY < Editor.getCurrentField().getHeight())
+                    Clipboard.paste(fieldX, fieldY);
                 break;
         }
 
@@ -85,13 +85,13 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
         newDrag = true;
 
         //Translate mouse coordinates to coordinates relative to field.
-        int x = (int) ((e.getX() - Editor.getRenderer().getXScroll()) / Editor.getRenderer().getScale());
-        int y = (int) ((e.getY() - Editor.getRenderer().getYScroll()) / Editor.getRenderer().getScale());
+        int fieldX = (int) ((e.getX() - Editor.getRenderer().getXScroll()) / Editor.getRenderer().getScale());
+        int fieldY = (int) ((e.getY() - Editor.getRenderer().getYScroll()) / Editor.getRenderer().getScale());
 
         //When finding selected node, prioritize path nodes.
-        EditorNode prospectSelected = Editor.getCurrentPath().getNodeAt(x, y);
+        EditorNode prospectSelected = Editor.getCurrentPath().getNodeAt(fieldX, fieldY);
         if(prospectSelected == null)
-            prospectSelected = Editor.getCurrentField().getNodeAt(x, y);
+            prospectSelected = Editor.getCurrentField().getNodeAt(fieldX, fieldY);
 
         if(currentSelected != prospectSelected){
             if(currentSelected != null)
@@ -114,11 +114,11 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
         if(shouldRender)
             Editor.getInstance().render();
 
-        if(x < 0 || y < 0 || x >= Editor.getCurrentField().getWidth() || y >= Editor.getCurrentField().getHeight()){
-            x = 0;
-            y = 0;
+        if(fieldX < 0 || fieldY < 0 || fieldX >= Editor.getCurrentField().getWidth() || fieldY >= Editor.getCurrentField().getHeight()){
+            fieldX = 0;
+            fieldY = 0;
         }
-        EditorMenu.updateMenu("edit", currentSelected, x, y);
+        EditorMenu.updateMenu("edit", currentSelected, fieldX, fieldY);
     }
 
     @Override
@@ -128,15 +128,15 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 
         if(currentSelected != null){
             //Translate mouse coordinates to coordinates relative to field.
-            int x = (int) ((e.getX() - Editor.getRenderer().getXScroll()) / Editor.getRenderer().getScale());
-            int y = (int) ((e.getY() - Editor.getRenderer().getYScroll()) / Editor.getRenderer().getScale());
+            int fieldX = (int) ((e.getX() - Editor.getRenderer().getXScroll()) / Editor.getRenderer().getScale());
+            int fieldY = (int) ((e.getY() - Editor.getRenderer().getYScroll()) / Editor.getRenderer().getScale());
 
             //Don't let them drag nodes off of the field.
-            if(x < 0 || x >= Editor.getCurrentField().getWidth() || y < 0 || y >= Editor.getCurrentField().getHeight())
+            if(fieldX < 0 || fieldX >= Editor.getCurrentField().getWidth() || fieldY < 0 || fieldY >= Editor.getCurrentField().getHeight())
                 return;
 
             if(!currentSelected.isAnchored())
-                currentSelected.handleMouseDrag(x, y, newDrag);
+                currentSelected.handleMouseDrag(fieldX, fieldY, newDrag);
         }else{
             Editor.getRenderer().setXScroll(Editor.getRenderer().getXScroll() + (e.getX() - lastMouseX));
             Editor.getRenderer().setYScroll(Editor.getRenderer().getYScroll() + (e.getY() - lastMouseY));
@@ -159,13 +159,13 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
         boolean shouldRender = false;
 
         //Translate mouse coordinates to coordinates relative to field.
-        int x = (int) ((e.getX() - Editor.getRenderer().getXScroll()) / Editor.getRenderer().getScale());
-        int y = (int) ((e.getY() - Editor.getRenderer().getYScroll()) / Editor.getRenderer().getScale());
+        int fieldX = (int) ((e.getX() - Editor.getRenderer().getXScroll()) / Editor.getRenderer().getScale());
+        int fieldY = (int) ((e.getY() - Editor.getRenderer().getYScroll()) / Editor.getRenderer().getScale());
 
         //When finding hovered node, prioritize path nodes.
-        EditorNode prospectHovered = Editor.getCurrentPath().getNodeAt(x, y);
+        EditorNode prospectHovered = Editor.getCurrentPath().getNodeAt(fieldX, fieldY);
         if(prospectHovered == null)
-            prospectHovered = Editor.getCurrentField().getNodeAt(x, y);
+            prospectHovered = Editor.getCurrentField().getNodeAt(fieldX, fieldY);
 
         if(currentHovered != prospectHovered){
             if(currentHovered != null)
@@ -188,11 +188,11 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
         if(shouldRender)
             Editor.getInstance().render();
 
-        if(x < 0 || y < 0 || x >= Editor.getCurrentField().getWidth() || y >= Editor.getCurrentField().getHeight()){
-            x = 0;
-            y = 0;
+        if(fieldX < 0 || fieldY < 0 || fieldX >= Editor.getCurrentField().getWidth() || fieldY >= Editor.getCurrentField().getHeight()){
+            fieldX = 0;
+            fieldY = 0;
         }
-        EditorMenu.updateMenu("edit", currentSelected, x, y);
+        EditorMenu.updateMenu("edit", currentSelected, fieldX, fieldY);
     }
 
     @Override
