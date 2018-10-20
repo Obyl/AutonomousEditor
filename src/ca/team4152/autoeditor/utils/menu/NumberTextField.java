@@ -7,4 +7,11 @@ public class NumberTextField extends JFormattedTextField{
     public NumberTextField(){
         setFormatter(new NumberTextFieldFormatter());
     }
+
+    public void setCeiling(int maximum){
+        if(maximum < 0)
+            maximum = 0;
+
+        ((NumberTextFieldFormatter) getFormatter()).setCeiling(maximum);
+    }
 }

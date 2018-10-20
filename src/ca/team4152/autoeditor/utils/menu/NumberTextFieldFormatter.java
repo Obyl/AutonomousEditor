@@ -16,6 +16,10 @@ public class NumberTextFieldFormatter extends NumberFormatter{
         setMinimum(0);
     }
 
+    public void setCeiling(int maximum){
+        setMaximum(maximum);
+    }
+
     @Override
     public Object stringToValue(String text) throws ParseException{
         if(text.isEmpty())

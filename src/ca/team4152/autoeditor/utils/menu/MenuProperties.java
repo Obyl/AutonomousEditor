@@ -97,9 +97,13 @@ public class MenuProperties {
         frame.setLocationRelativeTo(null);
 
         xField.setText(String.valueOf(currentlyEditing.getX0()));
+        xField.setCeiling(Editor.getCurrentField().getWidth());
         yField.setText(String.valueOf(currentlyEditing.getY0()));
+        yField.setCeiling(Editor.getCurrentField().getHeight());
         widthField.setText(String.valueOf(currentlyEditing.getX1() - currentlyEditing.getX0()));
+        widthField.setCeiling(Editor.getCurrentField().getWidth());
         heightField.setText(String.valueOf(currentlyEditing.getY1() - currentlyEditing.getY0()));
+        heightField.setCeiling(Editor.getCurrentField().getHeight());
         anchoredBox.setSelected(currentlyEditing.isAnchored());
 
         frame.add(xLabel);
