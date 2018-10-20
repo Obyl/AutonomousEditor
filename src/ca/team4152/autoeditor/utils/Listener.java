@@ -135,8 +135,14 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
             int fieldY = (int) ((e.getY() - Editor.getRenderer().getYScroll()) / Editor.getRenderer().getScale());
 
             //Don't let them drag nodes off of the field.
-            if(fieldX < 0 || fieldX >= Editor.getCurrentField().getWidth() || fieldY < 0 || fieldY >= Editor.getCurrentField().getHeight())
-                return;
+            if(fieldX < 0)
+                fieldX = 0;
+            else if(fieldX >= Editor.getCurrentField().getWidth())
+                fieldX = Editor.getCurrentField().getWidth() - 1;
+            if(fieldY < 0)
+                fieldY = 0;
+            else if(fieldY >= Editor.getCurrentField().getHeight())
+                fieldY = Editor.getCurrentField().getHeight() - 1;
 
             if(!currentSelected.isAnchored())
                 currentSelected.handleMouseDrag(fieldX, fieldY, newDrag);
