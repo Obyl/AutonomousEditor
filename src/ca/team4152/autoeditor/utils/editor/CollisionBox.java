@@ -14,8 +14,7 @@ public class CollisionBox extends EditorNode{
     public CollisionBox(int x0, int y0, int x1, int y1) {
         super(x0, y0, x1, y1);
 
-        xMidpoint = getX0() + (getX1() - getX0()) / 2;
-        yMidpoint = getY0() + (getY1() - getY0()) / 2;
+        updateMidpoints();
     }
 
     @Override
@@ -129,7 +128,11 @@ public class CollisionBox extends EditorNode{
 
         oldMouseX = x;
         oldMouseY = y;
-        xMidpoint = x0 + (x1 - x0) / 2;
-        yMidpoint = y0 + (y1 - y0) / 2;
+        updateMidpoints();
+    }
+
+    public void updateMidpoints(){
+        xMidpoint = getX0() + (getX1() - getX0()) / 2;
+        yMidpoint = getY0() + (getY1() - getY0()) / 2;
     }
 }

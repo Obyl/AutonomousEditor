@@ -1,5 +1,6 @@
 package ca.team4152.autoeditor.utils.menu;
 
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -13,27 +14,35 @@ public class PropertiesLayout implements LayoutManager{
     @Override
     public void layoutContainer(Container parent) {
         int labelX = 10;
-        int fieldX = 170;
+        int textFieldX = 170;
         int boxX = 222;
+        int buttonX = 17;
         int labelY = 6;
-        int fieldY = 5;
+        int textFieldY = 5;
         int labelWidth = 125;
-        int fieldWidth = 70;
+        int textFieldWidth = 70;
         int boxWidth = 20;
+        int buttonWidth = 100;
         int labelHeight = 20;
-        int fieldHeight = 25;
+        int textFieldHeight = 25;
         int boxHeight = 20;
+        int buttonHeight = 30;
         int yInc = 30;
+        int xInc = 110;
 
         for(Component component : parent.getComponents()){
             if(component instanceof JLabel){
                 component.setBounds(labelX, labelY, labelWidth, labelHeight);
                 labelY += yInc;
             }else if(component instanceof JTextField){
-                component.setBounds(fieldX, fieldY, fieldWidth, fieldHeight);
-                fieldY += yInc;
+                component.setBounds(textFieldX, textFieldY, textFieldWidth, textFieldHeight);
+                textFieldY += yInc;
             }else if(component instanceof JCheckBox){
-                component.setBounds(boxX, fieldY, boxWidth, boxHeight);
+                component.setBounds(boxX, textFieldY, boxWidth, boxHeight);
+                textFieldY += yInc;
+            }else if(component instanceof JButton){
+                component.setBounds(buttonX, labelY, buttonWidth, buttonHeight);
+                buttonX += xInc;
             }
         }
     }
