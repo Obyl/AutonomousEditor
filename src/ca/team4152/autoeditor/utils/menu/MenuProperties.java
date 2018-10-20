@@ -11,7 +11,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
-import javax.swing.JTextField;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -28,10 +27,10 @@ public class MenuProperties {
     private JLabel widthLabel;
     private JLabel heightLabel;
     private JLabel anchoredLabel;
-    private JTextField xField;
-    private JTextField yField;
-    private JTextField widthField;
-    private JTextField heightField;
+    private NumberTextField xField;
+    private NumberTextField yField;
+    private NumberTextField widthField;
+    private NumberTextField heightField;
     private JCheckBox anchoredBox;
 
     public MenuProperties(){
@@ -56,13 +55,13 @@ public class MenuProperties {
         anchoredLabel.setFont(labelFont);
 
         Font fieldFont = new Font("Arial", Font.PLAIN, 16);
-        xField = new JTextField();
+        xField = new NumberTextField();
         xField.setFont(fieldFont);
-        yField = new JTextField();
+        yField = new NumberTextField();
         yField.setFont(fieldFont);
-        widthField = new JTextField();
+        widthField = new NumberTextField();
         widthField.setFont(fieldFont);
-        heightField = new JTextField();
+        heightField = new NumberTextField();
         heightField.setFont(fieldFont);
         anchoredBox = new JCheckBox();
     }
