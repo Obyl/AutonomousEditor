@@ -40,13 +40,23 @@ public abstract class EditorComponent {
     }
 
     public EditorNode getNodeAt(int x, int y){
-        EditorNode result = null;
+        int attempts = 0;
 
-        for(EditorNode n : nodes){
-            if(n.intersects(x, y))
-                result = n;
+        while(attempts < 10){
+            try{
+                EditorNode result = null;
+
+                for(EditorNode n : nodes){
+                    if(n.intersects(x, y))
+                        result = n;
+                }
+
+                return result;
+            }catch (Exception e){
+                attempts++;
+            }
         }
 
-        return result;
+        return null;
     }
 }

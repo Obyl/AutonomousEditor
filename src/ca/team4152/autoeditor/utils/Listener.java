@@ -175,7 +175,6 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
             }
         }
 
-
         lastMouseX = e.getX();
         lastMouseY = e.getY();
 
