@@ -106,9 +106,10 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
             fieldX = fieldY = 0;
 
         EditorMenu.updateMenu("edit", currentSelected, fieldX, fieldY);
+        EditorMenu.updateMenu("popup", currentSelected, fieldX, fieldY);
 
         if(e.isPopupTrigger())
-            EditorMenu.getMenu("edit").getPopupMenu().show(e.getComponent(), e.getX(), e.getY());
+            EditorMenu.getMenu("popup").getPopupMenu().show(e.getComponent(), e.getX(), e.getY());
     }
 
     @Override
@@ -180,6 +181,7 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
             fieldY = 0;
         }
         EditorMenu.updateMenu("edit", currentSelected, fieldX, fieldY);
+        EditorMenu.updateMenu("popup", currentSelected, fieldX, fieldY);
     }
 
     @Override
@@ -221,7 +223,7 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
     @Override
     public void mouseReleased(MouseEvent e) {
         if(e.isPopupTrigger())
-            EditorMenu.getMenu("edit").getPopupMenu().show(e.getComponent(), e.getX(), e.getY());
+            EditorMenu.getMenu("popup").getPopupMenu().show(e.getComponent(), e.getX(), e.getY());
     }
 
     @Override

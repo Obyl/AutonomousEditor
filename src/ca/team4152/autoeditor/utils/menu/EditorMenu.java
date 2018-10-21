@@ -12,6 +12,7 @@ public abstract class EditorMenu extends JMenu {
     static {
         menus.put("file", new MenuFile());
         menus.put("edit", new MenuEdit());
+        menus.put("popup", new MenuEdit());
     }
 
     protected EditorMenu(String name){
