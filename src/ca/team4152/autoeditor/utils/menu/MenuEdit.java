@@ -5,6 +5,8 @@ import ca.team4152.autoeditor.utils.ResourceLoader;
 import ca.team4152.autoeditor.utils.editor.Clipboard;
 import ca.team4152.autoeditor.utils.editor.CollisionBox;
 import ca.team4152.autoeditor.utils.editor.EditorNode;
+import ca.team4152.autoeditor.utils.editor.History;
+import ca.team4152.autoeditor.utils.editor.HistoryItem;
 import ca.team4152.autoeditor.utils.editor.PathNode;
 
 import javax.swing.AbstractAction;
@@ -87,6 +89,9 @@ public class MenuEdit extends EditorMenu{
                     Editor.getCurrentField().removeNode(currentSelected);
                 else if (currentSelected instanceof PathNode)
                     Editor.getCurrentPath().removeNode(currentSelected);
+
+                if(currentSelected != null)
+                    History.addHistoryItem(HistoryItem.DELETE, currentSelected);
             }
         });
 

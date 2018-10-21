@@ -42,6 +42,9 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
                 Editor.getCurrentField().removeNode(currentSelected);
             else if (currentSelected instanceof PathNode)
                 Editor.getCurrentPath().removeNode(currentSelected);
+
+            if(currentSelected != null)
+                History.addHistoryItem(HistoryItem.DELETE, currentSelected);
             return;
         }
 
