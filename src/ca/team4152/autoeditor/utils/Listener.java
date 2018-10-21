@@ -95,20 +95,16 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 
             currentSelected = prospectSelected;
 
-            if(currentSelected != null){
-                if(!currentSelected.isAnchored())
-                    currentSelected.setSelected(true);
-            }
+            if(currentSelected != null)
+                currentSelected.setSelected(true);
         }
 
-        if(currentSelected != null){
+        if(currentSelected != null)
             History.addHistoryItem(HistoryItem.EDIT, currentSelected);
-        }
 
-        if(fieldX < 0 || fieldY < 0 || fieldX >= Editor.getCurrentField().getWidth() || fieldY >= Editor.getCurrentField().getHeight()){
-            fieldX = 0;
-            fieldY = 0;
-        }
+        if(fieldX < 0 || fieldY < 0 || fieldX >= Editor.getCurrentField().getWidth() || fieldY >= Editor.getCurrentField().getHeight())
+            fieldX = fieldY = 0;
+
         EditorMenu.updateMenu("edit", currentSelected, fieldX, fieldY);
 
         if(e.isPopupTrigger())
