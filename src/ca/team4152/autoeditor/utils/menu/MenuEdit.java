@@ -70,7 +70,6 @@ public class MenuEdit extends EditorMenu{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Editor.getCurrentField().addNode(new CollisionBox(x - 25, y - 25, x + 25, y + 25));
-                Editor.getInstance().render();
             }
         });
 
@@ -78,7 +77,6 @@ public class MenuEdit extends EditorMenu{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Editor.getCurrentPath().addNode(new PathNode(x, y));
-                Editor.getInstance().render();
             }
         });
 
@@ -89,7 +87,6 @@ public class MenuEdit extends EditorMenu{
                     Editor.getCurrentField().removeNode(currentSelected);
                 else if (currentSelected instanceof PathNode)
                     Editor.getCurrentPath().removeNode(currentSelected);
-                Editor.getInstance().render();
             }
         });
 
@@ -97,7 +94,6 @@ public class MenuEdit extends EditorMenu{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Clipboard.cut((CollisionBox) currentSelected, x, y);
-                Editor.getInstance().render();
             }
         });
 
@@ -105,7 +101,6 @@ public class MenuEdit extends EditorMenu{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Clipboard.copy((CollisionBox) currentSelected, x, y);
-                Editor.getInstance().render();
             }
         });
 
@@ -113,7 +108,6 @@ public class MenuEdit extends EditorMenu{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Clipboard.paste(x, y);
-                Editor.getInstance().render();
             }
         });
 

@@ -27,21 +27,26 @@ public class Editor {
         window = new EditorWindow();
         renderer = new Renderer();
 
-        //Keep trying to render field until we succeed.
+        //Render about 60 times per second.
         new Thread(() -> {
-            while(!renderer.hasRenderedSuccessfully()){
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            long lastTime = System.nanoTime();
+            double delta = 0D;
+            double nsPerTick = 1000000000D / 60D;
 
-                render();
+            while(true){
+                long now = System.nanoTime();
+                delta += (now - lastTime) / nsPerTick;
+                lastTime = now;
+
+                if(delta > 1){
+                    delta -= 1;
+                    render();
+                }
             }
-        }, "First Render").start();
+        }, "Render Thread").start();
     }
 
-    public void render(){
+    private void render(){
         if(window == null || renderer == null)
             return;
 

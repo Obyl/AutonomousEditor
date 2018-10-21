@@ -112,7 +112,6 @@ public class MenuProperties {
             currentlyEditing.setAnchored(anchoredBox.isSelected());
 
             frame.dispose();
-            Editor.getInstance().render();
             if(currentlyEditing instanceof CollisionBox)
                 ((CollisionBox) currentlyEditing).updateMidpoints();
         });

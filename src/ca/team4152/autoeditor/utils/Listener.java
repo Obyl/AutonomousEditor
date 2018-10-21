@@ -42,7 +42,6 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
                 Editor.getCurrentField().removeNode(currentSelected);
             else if (currentSelected instanceof PathNode)
                 Editor.getCurrentPath().removeNode(currentSelected);
-            Editor.getInstance().render();
             return;
         }
 
@@ -66,8 +65,6 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
                     Clipboard.paste(fieldX, fieldY);
                 break;
         }
-
-        Editor.getInstance().render();
     }
 
     @Override
@@ -81,7 +78,6 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
         if(Editor.getInstance() == null)
             return;
 
-        boolean shouldRender = false;
         newDrag = true;
 
         //Translate mouse coordinates to coordinates relative to field.
@@ -103,16 +99,11 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
                 if(!currentSelected.isAnchored())
                     currentSelected.setSelected(true);
             }
-
-            shouldRender = true;
         }
 
         if(currentSelected != null){
             History.addHistoryItem(HistoryItem.EDIT, currentSelected);
         }
-
-        if(shouldRender)
-            Editor.getInstance().render();
 
         if(fieldX < 0 || fieldY < 0 || fieldX >= Editor.getCurrentField().getWidth() || fieldY >= Editor.getCurrentField().getHeight()){
             fieldX = 0;
@@ -156,16 +147,12 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 
         if(newDrag)
             newDrag = false;
-
-        Editor.getInstance().render();
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
         if(Editor.getInstance() == null)
             return;
-
-        boolean shouldRender = false;
 
         //Translate mouse coordinates to coordinates relative to field.
         int fieldX = (int) ((e.getX() - Editor.getRenderer().getXScroll()) / Editor.getRenderer().getScale());
@@ -186,16 +173,11 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
                 if(!currentHovered.isAnchored())
                     currentHovered.setHovered(true);
             }
-
-            shouldRender = true;
         }
 
 
         lastMouseX = e.getX();
         lastMouseY = e.getY();
-
-        if(shouldRender)
-            Editor.getInstance().render();
 
         if(fieldX < 0 || fieldY < 0 || fieldX >= Editor.getCurrentField().getWidth() || fieldY >= Editor.getCurrentField().getHeight()){
             fieldX = 0;
@@ -230,8 +212,6 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
                 Editor.getRenderer().setXScroll(newXScroll);
                 Editor.getRenderer().setYScroll(newYScroll);
                 Editor.getRenderer().setScale(newScale);
-
-                Editor.getInstance().render();
             }
         }
     }
