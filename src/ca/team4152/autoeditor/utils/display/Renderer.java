@@ -18,11 +18,11 @@ public class Renderer {
     private int width;
     private int height;
     private int[] pixels;
-    private boolean renderedSuccessfully;
 
     private int xScroll = 0;
     private int yScroll = 0;
     private double scale = 1;
+    private boolean currentlyRendering = false;
 
     public Renderer(){
         width = Editor.getWindowWidth();
@@ -38,40 +38,79 @@ public class Renderer {
     public void setYScroll(int yScroll){ this.yScroll = yScroll; }
     public double getScale(){ return scale; }
     public void setScale(double scale){ this.scale = scale; }
-    public boolean hasRenderedSuccessfully(){ return renderedSuccessfully; }
 
     public void render(Graphics g){
+        currentlyRendering = true;
+
         Field currentField = Editor.getCurrentField();
         RobotPath currentPath = Editor.getCurrentPath();
 
-        for(int y = 0; y < height; y++){
-            for(int x = 0; x < width; x++){
-                //Set default colour to draw here, then change it accordingly in the method.
-                int properColor = Color.getColor("window_background");
+        //Fill in the background of the window.
+        int backgroundColor = Color.getColor("window_background");
+        for(int i = 0; i < pixels.length; i++)
+            pixels[i] = backgroundColor;
 
-                int fieldImageX = (int) ((1 / scale) * (x - xScroll));
-                int fieldImageY = (int) ((1 / scale) * (y - yScroll));
+        //Fill in the background of the field.
+        int fieldColor = Color.getColor("field_background");
+        for(int y = yScroll; y < yScroll + (currentField.getHeight() * scale); y++){
+            for (int x = xScroll; x < xScroll + (currentField.getWidth() * scale); x++){
+                if (x >= 0 && y >= 0 && x < width && y < height){
+                    pixels[x + y * width] = fieldColor;
+                }
+            }
+        }
 
-                if(fieldImageX >= 0 && fieldImageX < currentField.getWidth() &&
-                        fieldImageY >= 0 && fieldImageY < currentField.getHeight()){
-                    properColor = Color.getColor("field_background");
+        //Draw each of the collision boxes.
+        for(EditorNode node : currentField.getNodes()){
+            CollisionBox box = (CollisionBox) node;
 
-                    CollisionBox currentFieldBox = (CollisionBox) currentField.getNodeAt(fieldImageX, fieldImageY);
-
-                    PathNode currentPathNode = (PathNode) currentPath.getNodeAt(fieldImageX, fieldImageY);
-
-                    if(currentFieldBox != null)
-                        properColor = Color.getColor("collision_box");
-
-                    if(currentPathNode != null){
-                        if(currentPathNode.isHovered())
-                            properColor = Color.getColor("path_node_hover");
-                        else
-                            properColor = Color.getColor("path_node");
+            int boxColor = Color.getColor("collision_box");
+            if(box.isSelected()){
+                for (int y = (int) (yScroll + ((box.getY0() - 3) * scale)); y < yScroll + ((box.getY1() + 3) * scale); y++){
+                    for (int x = (int) (xScroll + ((box.getX0() - 3) * scale)); x < xScroll + ((box.getX1() + 3) * scale); x++){
+                        if (x >= 0 && y >= 0 && x < width && y < height){
+                            int fieldX = (int) ((1 / scale) * (x - xScroll));
+                            int fieldY = (int) ((1 / scale) * (y - yScroll));
+                            if(fieldX >= 0 && fieldX < currentField.getWidth() && fieldY >= 0 && fieldY < currentField.getHeight() && box.intersects(fieldX, fieldY)) {
+                                pixels[x + y * width] = boxColor;
+                            }
+                        }
                     }
                 }
+            }else{
+                for (int y = (int) (yScroll + (box.getY0() * scale)); y < yScroll + (box.getY1() * scale); y++){
+                    for (int x = (int) (xScroll + (box.getX0() * scale)); x < xScroll + (box.getX1() * scale); x++){
+                        if (x >= 0 && y >= 0 && x < width && y < height){
+                            int fieldX = (int) ((1 / scale) * (x - xScroll));
+                            int fieldY = (int) ((1 / scale) * (y - yScroll));
+                            if(fieldX >= 0 && fieldX < currentField.getWidth() && fieldY >= 0 && fieldY < currentField.getHeight()) {
+                                pixels[x + y * width] = boxColor;
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-                pixels[x + y * width] = properColor;
+        //Draw each of the path nodes.
+        for(EditorNode node : currentPath.getNodes()){
+            PathNode pathNode = (PathNode) node;
+
+            int nodeColorNormal = Color.getColor("path_node");
+            int nodeColorHover = Color.getColor("path_node_hover");
+            for (int y = (int) (yScroll + ((pathNode.getY0() - 3) * scale)); y < yScroll + ((pathNode.getY1() + 3) * scale); y++){
+                for (int x = (int) (xScroll + ((pathNode.getX0() - 3) * scale)); x < xScroll + ((pathNode.getX1() + 3) * scale); x++){
+                    if (x >= 0 && y >= 0 && x < width && y < height){
+                        int fieldX = (int) ((1 / scale) * (x - xScroll));
+                        int fieldY = (int) ((1 / scale) * (y - yScroll));
+                        if(fieldX >= 0 && fieldX < currentField.getWidth() && fieldY >= 0 && fieldY < currentField.getHeight()) {
+                            if(pathNode.isHovered())
+                                pixels[x + y * width] = nodeColorHover;
+                            else
+                                pixels[x + y * width] = nodeColorNormal;
+                        }
+                    }
+                }
             }
         }
 
@@ -79,7 +118,8 @@ public class Renderer {
         drawPathNodes();
 
         g.drawImage(image, 0, 0, null);
-        renderedSuccessfully = true;
+
+        currentlyRendering = false;
     }
 
     private void drawPathNodes(){
@@ -165,5 +205,9 @@ public class Renderer {
     public void center(){
         xScroll = (int) ((width / 2) - ((Editor.getCurrentField().getWidth() * scale) / 2));
         yScroll = (int) ((height / 2) - ((Editor.getCurrentField().getHeight() * scale) / 2));
+    }
+
+    public boolean isCurrentlyRendering(){
+        return currentlyRendering;
     }
 }

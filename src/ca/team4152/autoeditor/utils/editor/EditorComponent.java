@@ -1,5 +1,7 @@
 package ca.team4152.autoeditor.utils.editor;
 
+import ca.team4152.autoeditor.Editor;
+
 import java.util.ArrayList;
 
 public abstract class EditorComponent {
@@ -19,24 +21,29 @@ public abstract class EditorComponent {
     }
 
     public void addNode(EditorNode node){
-        nodes.add(node);
-    }
+        int attempts = 0;
 
-    public void addNode(EditorNode node, EditorNode after){
-        int addIndex = 0;
-
-        for(EditorNode n : nodes){
-            if(n.equals(after))
-                break;
-            else
-                addIndex++;
+        while(attempts < 100){
+            if(!Editor.getRenderer().isCurrentlyRendering()){
+                nodes.add(node);
+                attempts = 100;
+            }else{
+                attempts++;
+            }
         }
-
-        nodes.add(addIndex, node);
     }
 
     public void removeNode(EditorNode node){
-        nodes.remove(node);
+        int attempts = 0;
+
+        while(attempts < 100){
+            if(!Editor.getRenderer().isCurrentlyRendering()){
+                nodes.remove(node);
+                attempts = 100;
+            }else{
+                attempts++;
+            }
+        }
     }
 
     public EditorNode getNodeAt(int x, int y){
