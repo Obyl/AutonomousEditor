@@ -3,7 +3,7 @@ package ca.team4152.autoeditor.utils.display;
 import ca.team4152.autoeditor.Editor;
 import ca.team4152.autoeditor.utils.Listener;
 import ca.team4152.autoeditor.utils.ResourceLoader;
-import ca.team4152.autoeditor.utils.menu.EditorMenuBar;
+import ca.team4152.autoeditor.utils.menu.MenuBar;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -34,7 +34,7 @@ public class EditorWindow extends Canvas{
         } catch (Exception e) {
             e.printStackTrace();
         }
-        frame.setJMenuBar(new EditorMenuBar());
+        frame.setJMenuBar(new MenuBar());
 
         frame.setVisible(true);
     }

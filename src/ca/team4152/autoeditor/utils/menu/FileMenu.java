@@ -8,7 +8,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.event.ActionEvent;
 
-public class MenuFile extends EditorMenu{
+public class FileMenu extends Menu {
 
     private JMenu newOption;
     private JMenu openOption;
@@ -21,7 +21,7 @@ public class MenuFile extends EditorMenu{
     private JMenuItem saveFieldOption;
     private JMenuItem savePathOption;
 
-    protected MenuFile(){
+    protected FileMenu(){
         super("File");
     }
 

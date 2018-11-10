@@ -7,7 +7,7 @@ import ca.team4152.autoeditor.utils.editor.EditorNode;
 import ca.team4152.autoeditor.utils.editor.History;
 import ca.team4152.autoeditor.utils.editor.HistoryItem;
 import ca.team4152.autoeditor.utils.editor.PathNode;
-import ca.team4152.autoeditor.utils.menu.EditorMenu;
+import ca.team4152.autoeditor.utils.menu.Menu;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -108,11 +108,11 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
         if(fieldX < 0 || fieldY < 0 || fieldX >= Editor.getCurrentField().getWidth() || fieldY >= Editor.getCurrentField().getHeight())
             fieldX = fieldY = 0;
 
-        EditorMenu.updateMenu("edit", currentSelected, fieldX, fieldY);
-        EditorMenu.updateMenu("popup", currentSelected, fieldX, fieldY);
+        Menu.updateMenu("edit", currentSelected, fieldX, fieldY);
+        Menu.updateMenu("popup", currentSelected, fieldX, fieldY);
 
         if(e.isPopupTrigger())
-            EditorMenu.getMenu("popup").getPopupMenu().show(e.getComponent(), e.getX(), e.getY());
+            Menu.getMenu("popup").getPopupMenu().show(e.getComponent(), e.getX(), e.getY());
     }
 
     @Override
@@ -182,8 +182,8 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
             fieldX = 0;
             fieldY = 0;
         }
-        EditorMenu.updateMenu("edit", currentSelected, fieldX, fieldY);
-        EditorMenu.updateMenu("popup", currentSelected, fieldX, fieldY);
+        Menu.updateMenu("edit", currentSelected, fieldX, fieldY);
+        Menu.updateMenu("popup", currentSelected, fieldX, fieldY);
     }
 
     @Override
@@ -225,7 +225,7 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
     @Override
     public void mouseReleased(MouseEvent e) {
         if(e.isPopupTrigger())
-            EditorMenu.getMenu("popup").getPopupMenu().show(e.getComponent(), e.getX(), e.getY());
+            Menu.getMenu("popup").getPopupMenu().show(e.getComponent(), e.getX(), e.getY());
     }
 
     @Override

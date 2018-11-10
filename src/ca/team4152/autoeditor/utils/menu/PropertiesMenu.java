@@ -16,12 +16,12 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 
-public class MenuProperties {
+public class PropertiesMenu {
 
     private JMenuItem asItem;
     private EditorNode currentlyEditing;
 
-    public MenuProperties(){
+    public PropertiesMenu(){
         asItem = new JMenuItem();
         asItem.setAction(new AbstractAction("Properties") {
             @Override

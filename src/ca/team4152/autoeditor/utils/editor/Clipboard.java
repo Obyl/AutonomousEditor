@@ -1,7 +1,7 @@
 package ca.team4152.autoeditor.utils.editor;
 
 import ca.team4152.autoeditor.Editor;
-import ca.team4152.autoeditor.utils.menu.EditorMenu;
+import ca.team4152.autoeditor.utils.menu.Menu;
 
 public class Clipboard {
 
@@ -20,7 +20,7 @@ public class Clipboard {
         storedX1 = box.getX1();
         storedY1 = box.getY1();
 
-        EditorMenu.updateMenu("edit", box, x, y);
+        Menu.updateMenu("edit", box, x, y);
     }
 
     public static void cut(CollisionBox box, int x, int y){
@@ -28,7 +28,7 @@ public class Clipboard {
 
         Editor.getCurrentField().removeNode(box);
         History.addHistoryItem(HistoryItem.DELETE, box);
-        EditorMenu.updateMenu("edit", null, x, y);
+        Menu.updateMenu("edit", null, x, y);
     }
 
     public static void paste(int x, int y){
@@ -40,7 +40,7 @@ public class Clipboard {
 
             Editor.getCurrentField().addNode(pastedBox);
             History.addHistoryItem(HistoryItem.CREATE, pastedBox);
-            EditorMenu.updateMenu("edit", pastedBox, x, y);
+            Menu.updateMenu("edit", pastedBox, x, y);
         }
     }
 

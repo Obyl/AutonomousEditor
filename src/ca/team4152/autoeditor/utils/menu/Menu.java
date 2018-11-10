@@ -5,17 +5,17 @@ import ca.team4152.autoeditor.utils.editor.EditorNode;
 import javax.swing.JMenu;
 import java.util.HashMap;
 
-public abstract class EditorMenu extends JMenu {
+public abstract class Menu extends JMenu {
 
-    private static HashMap<String, EditorMenu> menus = new HashMap<>();
+    private static HashMap<String, Menu> menus = new HashMap<>();
 
     static {
-        menus.put("file", new MenuFile());
-        menus.put("edit", new MenuEdit());
-        menus.put("popup", new MenuEdit());
+        menus.put("file", new FileMenu());
+        menus.put("edit", new EditMenu());
+        menus.put("popup", new EditMenu());
     }
 
-    protected EditorMenu(String name){
+    protected Menu(String name){
         super(name);
 
         createMenuItems();
@@ -25,7 +25,7 @@ public abstract class EditorMenu extends JMenu {
     protected abstract void createMenuItems();
     protected abstract void updateMenuItems(EditorNode currentSelected, int x, int y);
 
-    public static EditorMenu getMenu(String name){
+    public static Menu getMenu(String name){
         return menus.get(name);
     }
 

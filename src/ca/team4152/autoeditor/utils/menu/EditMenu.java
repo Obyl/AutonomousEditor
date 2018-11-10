@@ -14,7 +14,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.event.ActionEvent;
 
-public class MenuEdit extends EditorMenu{
+public class EditMenu extends Menu {
 
     private JMenu newOption;
 
@@ -25,9 +25,9 @@ public class MenuEdit extends EditorMenu{
     private JMenuItem copyOption;
     private JMenuItem pasteOption;
 
-    private MenuProperties propertiesMenu;
+    private PropertiesMenu propertiesMenu;
 
-    protected MenuEdit(){
+    protected EditMenu(){
         super("Edit");
     }
 
@@ -62,7 +62,7 @@ public class MenuEdit extends EditorMenu{
 
         addSeparator();
 
-        propertiesMenu = new MenuProperties();
+        propertiesMenu = new PropertiesMenu();
         add(propertiesMenu.getAsItem());
     }
 
