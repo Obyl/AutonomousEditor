@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 
 public class Control {
 
-    private static final int CANCEL = 0;
+    public static final int CANCEL = 0;
 
     private static Field storedField = null;
     private static RobotPath storedPath = null;
@@ -39,7 +39,7 @@ public class Control {
 
     }
 
-    private static int savePrompt(boolean field){
+    public static int savePrompt(boolean field){
         String[] options = {"Cancel", "No", "Yes"};
         final int cancel = 0;
         final int yes = 2;

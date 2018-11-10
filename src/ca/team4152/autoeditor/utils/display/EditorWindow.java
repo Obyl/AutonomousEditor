@@ -3,12 +3,15 @@ package ca.team4152.autoeditor.utils.display;
 import ca.team4152.autoeditor.Editor;
 import ca.team4152.autoeditor.utils.Listener;
 import ca.team4152.autoeditor.utils.ResourceLoader;
+import ca.team4152.autoeditor.utils.editor.Control;
 import ca.team4152.autoeditor.utils.menu.MenuBar;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class EditorWindow extends Canvas{
 
@@ -25,9 +28,17 @@ public class EditorWindow extends Canvas{
         frame.setResizable(false);
         frame.add(this);
         frame.pack();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setIconImage(ResourceLoader.getImageIcon("window_icon").getImage());
+
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                if(Control.savePrompt(true) != Control.CANCEL)
+                    e.getWindow().dispose();
+            }
+        });
 
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
